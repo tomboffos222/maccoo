@@ -55,19 +55,31 @@ class UserController extends Controller
                 $data['products'] = Product::paginate(12);
                 $data['authors'] = Authors::get();
                 $data['categories'] = Categories::get();
-
+                if($request['author'] != 'All'){
+                
+                $data['products'] =Product::where('author','LIKE','%'.$request['author'].'%')->paginate(12);
+                $data['authors'] = Authors::get();
+                $data['categories'] = Categories::get();
+                
+                }
                 
                 # code...
             }elseif ($request['category'] != 'All') {
-
+                
                 $data['products'] =Product::where('chars','LIKE','%'.$request['category'].'%')->paginate(12);
                 $data['authors'] = Authors::get();
                 $data['categories'] = Categories::get();
-                # code...
-            }elseif($request['author'] =='All'){
-                $data['products'] =Product::where('chars','LIKE','%'.$request['author'].'%')->paginate(12);
+                if($request['author'] != 'All'){
+                
+                $data['products'] =Product::where('author','LIKE','%'.$request['author'].'%');
+                $data['products']  = $data['products']->where('chars','LIKE','%'.$request['category'].'%')->paginate(12);
+
                 $data['authors'] = Authors::get();
                 $data['categories'] = Categories::get();
+                
+                }
+                
+                # code...
             }
             return view('shop',$data);
 
