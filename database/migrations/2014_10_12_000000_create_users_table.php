@@ -17,13 +17,15 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('bs_id');
 
-            $table->enum('status',['sent','registered','reject'])->default('sent');
-            $table->enum('prize',['home','car','tech']);
+            $table->enum('status',['sent','registered','reject','partner'])->default('sent');
+            
 
             $table->string('name');
-            $table->string('login');
+
+            $table->integer('login');
             $table->string('phone',30);
             $table->string('email');
+            $table->integer('bill',30);
             $table->string('password')->nullable();
 
             $table->integer('bot_owner_id')->nullable()->default(null);

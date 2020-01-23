@@ -118,6 +118,18 @@
                         <span>Матрица</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('Home')}}">
+                        <i class="material-icons">web</i>
+                        <span>Домой</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('Out')}}">
+                        <i class="material-icons">undo</i>
+                        <span>Выход</span>
+                    </a>
+                </li>
                 
             </ul>
         </div>

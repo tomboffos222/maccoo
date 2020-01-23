@@ -27,29 +27,35 @@
                    <label for="phone">Введите ваш Телефон номер</label>
                    <input class="form-control" type="number" required id="phone" name="phone">
                </div>
-               <div class="form-group">
-                   <p>Выберите</p>
-                   <div>
-                       <input type="radio" id="home" name="prize" value="home">
-                       <label for="home">Дом</label>
-
-                       <input type="radio" id="car" name="prize" value="car">
-                       <label for="car">Автомобиль</label>
-
-                       <input type="radio" id="tech" name="prize" value="tech">
-                       <label for="tech">Спецтехника</label>
-                   </div>
-               </div>
+               
                <div>
                     <button class="btn btn-primary">Отправить</button>
                </div>
            </form>
        </div>
     </div>
+    <style>
+      form{
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        padding:20px 10px;
+        margin-bottom: 40px;
+      }
+      input{
+        box-shadow: 0 0 2px rgba(0,0,0,0.5) !important;
+        border:1px solid #000;
+        padding:10px 10px !important;
+      }
+    </style>
 @endsection
 
 @push('cs')
     <style>
+      form{
+        border:1px solid #000;
+      }
+        input{
+
+        }
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;

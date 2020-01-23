@@ -41,6 +41,8 @@
     @stack('css')
 </head>
 <header>
+    <?php $user = session()->get('user')?>
+    
     <div class="container">
         <div class="row">
             <div class="col-lg-3 logotype">
@@ -63,7 +65,28 @@
                     <ul>
                         <li><a href=""><i class="material-icons">search</i></a></li>
                         <li><a href=""><i class="material-icons">shopping_cart</i></a></li>
-                        <li><a href=""><i class="material-icons">perm_identity</i></a></li>
+                        @if($user)
+                        <li>
+                            <a href="" class="account">{{$user->login}}</a>
+                            <ul class="dropdown">
+                                <li><a href="">Мой аккаунт</a></li>
+                                @if($user['status'] == 'partner')
+                                    <li><a href="{{route('Main')}}">Личный кабинет</a></li>
+
+                                @endif
+                                <li><a href="{{route('Out')}}">Выйти</a></li>
+                            </ul>
+                        </li>
+
+                        @else
+                        <li><a href="" class="account"><i class="material-icons">perm_identity</i></a></li>
+                             <ul class="dropdown">
+                                <li><a href="{{route('LoginPage')}}">Войти</a></li>
+                                <li><a href="{{route('RegisterPage')}}">Регистрация</a></li>
+                                
+                            </ul>
+
+                        @endif
                     </ul>
                 </nav>
             </div>
@@ -105,7 +128,7 @@
                 </p>
             </div>
             <div class="col-lg-3">
-                <h3>information</h3>
+                <h3>Информация</h3>
                 <li><a href="">Напишите нам</a></li>
                 <li><a href="">Карта сайта</a></li>
                 <li><a href="">Политика конфиденциальности</a></li>
@@ -114,11 +137,19 @@
             </div>
             <div class="col-lg-3">
                 <h3>Мой аккаунт</h3>
+                @if($user['status'] == 'partner')
+                <li><a href="{{route('Main')}}">Личный кабинет</a></li>
+                <li><a href="{{route('Out')}}">Выйти</a></li>
+                
+                
+                @else
+                
                 <li><a href="">Напишите нам</a></li>
                 <li><a href="">Карта сайта</a></li>
                 <li><a href="">Политика конфиденциальности</a></li>
                 <li><a href="">О нас</a></li>
                 <li><a href="">Потребительские услуги</a></li>
+                @endif
             </div>
             <div class="col-lg-3">
                 <h3>Инстаграмм</h3>

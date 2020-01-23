@@ -44,18 +44,7 @@
                                 <td>Позиция на пирамиде</td>
                                 <td>{{$user->row + 1}}</td>
                             </tr>
-                            <tr>
-                                <td>Условия</td>
-                                <td>
-                                    @if($user->prize == 'home')
-                                        Дом
-                                    @elseif($user->prize == 'car')
-                                        Автомобиль
-                                    @else
-                                        Спецтехника
-                                    @endif
-                                </td>
-                            </tr>
+                            
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -71,7 +60,7 @@
         @if($i < $maxColumnCount)
             @php
                 $users = \App\Models\Tree::join('users','users.id','tree.user_id')->where('parent_id',$user->id)
-                ->select('tree.*','name','phone','login','bs_id','prize','email')
+                ->select('tree.*','name','phone','login','bs_id','email')
                 ->get();
             @endphp
             @foreach($users as $user)

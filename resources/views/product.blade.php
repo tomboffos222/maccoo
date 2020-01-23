@@ -65,7 +65,7 @@
 				<h1 style="margin-bottom: 100px;">Рекомендованные продукты</h1>
 				<div class="owl-carousel owl-carousel3">
 					@foreach($products as $key)
-					<a href="{{route('Product',$product->id)}}" style="color:inherit;">
+					<a href="{{route('Product',$key->id)}}" style="color:inherit;">
 						<div class="product_slider">
 							<img src="{{$key->image1}}" alt="">
 							<h3>{{$key->title}}</h3>

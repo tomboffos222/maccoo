@@ -178,3 +178,7 @@ $(document).ready(function(){
 });
 
 
+$('.account').on('click',function(e){
+    e.preventDefault()
+    $('.dropdown').toggleClass('active');
+})

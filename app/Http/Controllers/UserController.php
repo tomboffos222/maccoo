@@ -126,11 +126,10 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'login' => 'required|max:255|unique:users,login',
+            'login' => 'required|numeric|unique:users,login',
             'bs_id' => 'required|numeric|unique:users,bs_id',
             'phone' => 'required',
-            'email' => 'required|email',
-            'prize' => 'required|in:home,car,tech',
+            'email' => 'required|email'
         ];
 
         $messages = [
@@ -138,7 +137,7 @@ class UserController extends Controller
             "login.required" => "Введите ваш Логин",
             "login.unique" => "Логин занять,введите другой логин",
             "phone.required" => "Введите телефон номер",
-            "prize.required" => "Выберите один из призов Дом,Машина,Спецтехника",
+            
             "bs_id.unique" => "ID уже занято"
         ];
 
@@ -148,7 +147,7 @@ class UserController extends Controller
             return back()->withErrors($validator->errors());
 
         } else {
-            User::create($request->only(['bs_id','login','email','name','prize','phone']));
+            User::create($request->only(['bs_id','login','email','name','phone']));
             return redirect()->route('Main')->with('message','Ваш запрос отправлен!');
         }
     }
@@ -174,7 +173,7 @@ class UserController extends Controller
             return back()->withErrors($validator->errors());
 
         } else {
-            $user = User::whereLogin($request['login'])->wherePassword($request['password'])->whereStatus('registered')->first();
+            $user = User::whereLogin($request['login'])->wherePassword($request['password'])->where('status',['partner','registered'])->first();
 
             if (!$user){
                 return redirect()->route('LoginPage')->withErrors('Логин или пароль не верно');
@@ -182,10 +181,53 @@ class UserController extends Controller
             session()->put('user',$user);
             session()->save();
 
-            return redirect()->route('Main');
+            return redirect()->route('Home');
         }
     }
+    public function Edit(){
+        $user= session()->get('user');
 
+        $data['user'] = User::find($user['id']);
+
+        return view('edit', $data);
+    }
+    public function EditUser(Request $request){
+        $data['user'] = session()->get('user');
+        $rules = [
+            'id'=>'required|max:255',
+            'email' => 'required|max:255',
+            'name' => 'required|max:255',
+            'phone'  => 'required|max:14',
+            'password' => 'required|max:14'
+
+        ];
+        $messages = [
+            "id.required"=>"Введите id",
+            "email.required" => "Введите email",
+            "name.required" => "Введите ФИО",
+            "phone.required" => "Введите телефон",
+            "password.required" => "Введите пароль"
+        ];
+        $validator = $this->validator($request->all(), $rules, $messages);
+
+        if($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else{
+            
+            (new \App\Models\User)::where('id',$data['user']->id)->update($request->only(['password','email','name','phone']));
+            
+            
+
+
+
+            return back()->with('message','Изменено');
+
+
+        }
+        
+
+
+    }
     public function Out(Request $request){
         session()->forget('user');
         return redirect()->route('LoginPage')->withErrors('Вы вышли');
@@ -193,6 +235,8 @@ class UserController extends Controller
 
     public function Main(){
         $data['user'] = session()->get('user');
+
+
         $data['tree'] = Tree::whereUserId($data['user']->id)->first();
 
         return view('main',$data);
@@ -200,7 +244,7 @@ class UserController extends Controller
 
     public function Tree($userId = null){
         $user = Tree::join('users','users.id','tree.user_id')
-            ->select('tree.*','name','phone','login','bs_id','prize','email');
+            ->select('tree.*','name','phone','login','bs_id','email');
         if ($userId){
             $user = $user->find($userId);
         }else{

@@ -8,7 +8,7 @@
                <h2>Логин</h2>
                {{csrf_field()}}
                <div class="form-group">
-                   <label for="login">Введите ваш Login</label>
+                   <label for="login">Введите Логин</label>
                    <input class="form-control" placeholder="" type="text" required id="login" name="login">
                </div>
                <div class="form-group">
@@ -21,6 +21,18 @@
            </form>
        </div>
     </div>
+    <style>
+      form{
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        padding:20px 10px;
+        margin-bottom: 40px;
+      }
+      input{
+        box-shadow: 0 0 2px rgba(0,0,0,0.5) !important;
+        border:1px solid #000;
+        padding:10px 10px !important;
+      }
+    </style>
 @endsection
 
 @push('cs')

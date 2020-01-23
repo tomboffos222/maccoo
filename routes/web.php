@@ -15,6 +15,8 @@ Route::middleware(['userCheck'])->group(function () {
     Route::get('Main','UserController@Main')->name('Main');
     Route::get('out','UserController@Out')->name('Out');
     Route::get('tree/{userId?}','UserController@Tree')->name('Tree');
+    Route::get('setting/edit', 'UserController@Edit')->name('Edit');
+    Route::get('setting/edit/user','UserController@EditUser')->name('EditUser');
 
 });
 
@@ -38,6 +40,8 @@ Route::name('admin.')->prefix('admin')->middleware(['adminCheck'])->group(functi
     Route::get('blacklist/add','AdminController@AddBlackList')->name('AddBlackList');
     Route::get('product/view','AdminController@ProductView')->name('ProductView');
     Route::get('shop/view', 'AdminController@ShopView')->name('ShopView');
+    Route::get('add/category','AdminController@CategoryAdd')->name('CategoryAdd');
+    Route::get('author/add','AdminController@AuthorAdd')->name('AuthorAdd');
 
 });
 

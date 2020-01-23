@@ -74,26 +74,30 @@
     <aside id="leftsidebar" class="sidebar">
         <!-- User Info -->
         <div class="user-info">
-            <div class="image">
-                <img src="{{asset('admin-vendor/images/user.png')}}" width="48" height="48" alt="User" />
+            <div class="image" style="display:flex;">
+                <img src="{{asset('admin-vendor/images/user.png')}}" width="48" height="48" alt="User" style="align-items:top; margin-right: 20px;" />
+                <div class="">
+                    <b>
+                    Логин: {{$user->login}} <br>
+                    Имя: {{$user->name}} <br>
+                    
+
+                    <a href="{{route('Edit')}}" class="bg-primary-gradient btn" style="margin-top:10px;">
+                        <img src="{{asset('admin-vendor/images/wheel.svg')}}" alt="" style="width:20px;margin-right: 10px;">
+                        Редактровать
+                    </a>
+                </div>
             </div>
             <div class="info-container">
-                <?php $admin = session()->get('admin')?>
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$admin->name}}</div>
-                <div class="email">{{$admin->username}}</div>
-                <div class="btn-group user-helper-dropdown">
-                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                    <ul class="dropdown-menu pull-right">
-                        <li><a href="{{route('Out')}}"><i class="material-icons">input</i>Выйти</a></li>
-                    </ul>
-                </div>
+                
+               
             </div>
         </div>
         <!-- #User Info -->
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
-                <li class="header">НАВИГАЦИЯ</li>
+               
                 <li>
                     <a href="{{route('Main')}}">
                         <i class="material-icons">home</i>
@@ -101,11 +105,43 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('Home')}}">
+                        <i class="material-icons">web</i>
+                        <span>На сайт</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="material-icons">accessibility_new</i>
+                        <span>Приглашенные пользователи</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="material-icons">how_to_reg</i>
+                        <span>Боты</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{route('Tree')}}">
-                        <i class="material-icons">home</i>
+                        <i class="material-icons">view_comfy</i>
                         <span>Матрица</span>
                     </a>
                 </li>
+                <li>
+                    <a href="">
+                        <i class="material-icons">mail</i>
+                        <span>Письмо тех поддержке</span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="{{route('Out')}}">
+                        <i class="material-icons">undo</i>
+                        <span>Выход</span>
+                    </a>
+                </li>
+
             </ul>
         </div>
         <!-- #Menu -->

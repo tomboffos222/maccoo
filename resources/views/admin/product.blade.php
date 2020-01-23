@@ -2,6 +2,9 @@
 
 
 @section('content')
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+ 		 Добавить товар	
+	</button>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -79,5 +82,62 @@
 		}
 
 	</style>
+	
 
+<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Добавить товар</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form action="">
+		        	<label for="">Фото</label>
+		        	<input type="file" placeholder="Фото" class="form-control">
+		        	<br>
+		        	<input type="text" class="form-control" placeholder="Название книги">
+		        	<br>
+		        	<input type="text" placeholder="Цена" class="form-control"> 
+		        	<br>
+		        	<select name="" class="custom-select" id="">
+		        		@foreach($categories as $category)
+		        		<option value="{{$category->chars}}">{{$category->chars}}</option>
+		        		@endforeach
+		        	</select>
+		        	<br>
+		        	<select name="" class="custom-select" id="">
+		        		@foreach($authors as $author)
+		        		<option value="{{$author->Name}}">{{$author->Name}}</option>
+		        		@endforeach
+		        	</select>
+		        	<br>
+		        	<textarea placeholder="Описание" class="form-control"></textarea> 
+		        	<br>
+		        	<input type="checkbox" placeholder="" id="stock" name="stock"><label for="stock">Товар в наличии</label>
+		        	<br>
+		        	<input type="submit" class="btn btn-primary form-control">
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        
+		        
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<style>
+			button.dropdown-toggle{
+				display: none;
+
+			}
+			select{
+				margin-bottom: 20px;
+			}
+		</style>
 @endsection
+
+

@@ -59,8 +59,88 @@ class AdminController extends Controller
         return redirect()->route('admin.LoginPage')->withErrors('Вы вышли');
     }
     public function Users(Request $request){
-        $data['users'] = User::whereStatus('sent')->paginate(25);
+        $data['users'] = User::whereStatus('partner')->paginate(25);
         return view('admin.users',$data);
+    }
+    public function CategoryAdd(Request $request){
+        $rules = [
+            'category' => 'required|max:255'
+
+        ];
+        $messages = [
+            "category.requred"  => "Введите категорию"
+        ];
+
+        $validator  = $this->validator($request->all(), $rules, $messages);
+
+        if($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else{
+            $category = new Categories;
+            $category->chars = $request['category'];
+
+            $category->save();
+
+            return back()->withMessage('Добавлено');
+        }
+    }
+    public function AuthorAdd(Request $request){
+        $rules = [
+            'image' => 'required|',
+            'name' =>'required|max:255',
+            'birth' =>'required|max:255',
+            'books' => 'required',
+            'address' =>'required|max:255',
+            'gender' =>'required',
+            'description' =>'required|max:300'
+        ];
+        $messages = [
+
+            "image.required"  => "Выберите фото",
+            "name.required" => "Напишите имя",
+            "birth.required" =>"Введите дату рождения",
+            "books.required" =>"Введите количество книг",
+            "address.required" =>"Напшите адрес",
+            "gender.required" =>"Выберите пол",
+            "description.required" =>"Введите описание"
+        ];
+        $validator = $this->validator($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
+
+        } else {
+            $image = $request['image'];
+            
+            $image = "{{asset('/uploads/image/".$image."')}}";
+            
+            $author = new Authors;
+
+            $author->Name = $request['name'];
+            $author->Description = $request['description'];
+            $author->Address = $request['address'];
+            $author->image1 = $image;
+            $author->Birth = $request['birth'];
+            $author->gender = $request['gender'];
+            $author->Books = $request['books'];
+
+            $author->save();
+
+
+
+            return back()->withMessage('Добавлено');
+
+
+
+
+
+         
+            
+ 
+        }
+
+
+
     }
     public function RegisterUser(Request $request){
         $rules = [
@@ -93,6 +173,8 @@ class AdminController extends Controller
         }
     }
     public function ProductView(){
+        $data['categories'] = Categories::get();
+        $data['authors'] = Authors::get();
 
         $data['products'] = Product::where('status','1')->paginate(10);
         return view('admin.product',$data);
@@ -134,7 +216,7 @@ class AdminController extends Controller
     public function Tree($userId = null){
 
         $user = Tree::join('users','users.id','tree.user_id')
-            ->select('tree.*','name','phone','login','bs_id','prize','email');
+            ->select('tree.*','name','phone','login','bs_id','email');
 
         if ($userId){
            $user = $user->find($userId);
