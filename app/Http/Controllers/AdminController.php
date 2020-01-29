@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 use App\BlackListed;
 use App\Authors;
 use App\Categories;
+
 use App\Product;
+use App\Message;
 
 class AdminController extends Controller
 {
@@ -83,6 +85,40 @@ class AdminController extends Controller
 
             return back()->withMessage('Добавлено');
         }
+    }
+    public function BlackList(){
+        $data['zhsns']  = BlackListed::paginate(10);
+        return view('admin.blacklisted',$data);
+    }
+    public function MessagePage(){
+        $data['messages'] = Message::where('answer',NULL)->paginate(3);
+        return view('admin.message',$data);
+    }
+    public function MessageAnswer(Request $request){
+        $rules = [
+            'message_id'=>'required|max:255',
+            'answer' =>'required|max:255'
+        ];
+
+        $messages = [
+            "answer.required" => "Введите ответ",
+            "message_id.required" =>"Введите id"
+        ];
+
+        $validator = $this->validator($request->all(), $rules , $messages);
+
+        if($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else{
+            $message = Message::find($request['message_id']);
+
+            $message['answer'] = $request['answer'];
+
+            $message->save();
+
+            return back()->with('message','Отправлено!');
+        }
+
     }
     public function AuthorAdd(Request $request){
         $rules = [
@@ -186,10 +222,7 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-    public function BlackList(){
-        $zhsns = BlackListed::get();
-        return view('admin.blacklisted',['zhsns'=>$zhsns]);
-    }
+   
     public function AddBlackList(Request $request){
         $rules = [
             'zhsn' => 'required|max:14'
@@ -216,7 +249,7 @@ class AdminController extends Controller
     public function Tree($userId = null){
 
         $user = Tree::join('users','users.id','tree.user_id')
-            ->select('tree.*','name','phone','login','bs_id','email');
+            ->select('tree.*','name','phone','login','email');
 
         if ($userId){
            $user = $user->find($userId);
@@ -227,7 +260,7 @@ class AdminController extends Controller
     }
 
     function AddUserToMatrix($user_id){
-        if (Tree::whereUserId($user_id)->whereStatus('registered')->exists()){
+        if (Tree::whereUserId($user_id)->whereStatus('partner')->exists()){
             return back()->withErrors('Уже зарегистрированы');
         }
 

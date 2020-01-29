@@ -129,7 +129,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{route('MessagePage')}}">
                         <i class="material-icons">mail</i>
                         <span>Письмо тех поддержке</span>
                     </a>

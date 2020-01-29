@@ -121,8 +121,9 @@
 			<hr>
 			<div class="row">
 			@foreach($products as $product)
-				<a href="{{route('Product',$product->id)}}">
-					<div class="col-lg-3 booker">
+				
+					<div class="col-lg-4 booker">
+						<a href="{{route('Product',$product->id)}}">
 			    			<div class="book">
 								<h1>
 									<img src="{{$product->image1}}" alt="">
@@ -134,8 +135,9 @@
 				    		
 				    			
 			    			</div>
+			    		</a>
 		    		</div>
-				</a>
+				
 
 			@endforeach
 

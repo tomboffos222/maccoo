@@ -9,10 +9,38 @@ use App\BlackListed;
 use App\Authors;
 use App\Product;
 use App\Categories;
-
+use App\Message;
 class UserController extends Controller
 {
+    public function Up(){
+        $user= session()->get('user');
 
+        $data['user'] = User::find($user['id']);
+        return view('up',$data);
+    }
+    public function AccountUp(){
+        $user= session()->get('user');
+
+        $user = User::find($user['id']);
+
+        $user['bill'] = $user['bill'] - 20000;
+
+        if ($user['bill'] < 0 ) {
+
+            return back()->withErrors('Недостаточно средств');
+            # code...
+        }else{
+            $user['status'] = 'partner';
+
+            $user->save();
+
+            return back()->with('message','Оплачено, ваш статус: партнер');
+
+
+        }
+
+
+    }
     public function Home(){
 
         $data['products'] = Product::orderBy('id','desc')->paginate(12);
@@ -25,7 +53,7 @@ class UserController extends Controller
         return view('home',$data);
     }
     public function Shop(){
-        $data['products'] = Product::paginate(12);
+        $data['products'] = Product::orderBy('id')->paginate(7);
         $data['authors'] = Authors::get();
         $data['categories'] = Categories::get();
 
@@ -126,19 +154,21 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'login' => 'required|numeric|unique:users,login',
-            'bs_id' => 'required|numeric|unique:users,bs_id',
+
+            'password' =>'required|max:255',
             'phone' => 'required',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'zhsn' => 'required|max:14'
         ];
 
         $messages = [
+
             "name.required" => "Введите ваше имя",
-            "login.required" => "Введите ваш Логин",
+            "password.required" =>"Введите пароль",
             "login.unique" => "Логин занять,введите другой логин",
             "phone.required" => "Введите телефон номер",
-            
-            "bs_id.unique" => "ID уже занято"
+            "zhsn.required" =>"Введите ИИН",
+            "zhsn.max" => "Максимальное количество 14"
         ];
 
         $validator = $this->validator($request->all(), $rules, $messages);
@@ -147,8 +177,22 @@ class UserController extends Controller
             return back()->withErrors($validator->errors());
 
         } else {
-            User::create($request->only(['bs_id','login','email','name','phone']));
-            return redirect()->route('Main')->with('message','Ваш запрос отправлен!');
+            $lastuser = User::orderBy('id','desc')->first();
+
+            $user = new User;
+
+            
+            $user['login'] = 000000+$lastuser['id']+1;
+            $user['password'] = $request['password'];
+
+            $user['zhsn'] = $request['zhsn'];
+            $user['phone'] = $request['phone'];
+            $user['email'] = $request['email'];
+            $user['status'] = 'registered';
+            $user['name']  =$request['name'];
+            $user['bill'] = 0;
+            $user->save();
+            return redirect()->route('Home')->with('message','Ваш запрос отправлен! Ваш логин:'.$user['login']);
         }
     }
 
@@ -173,7 +217,7 @@ class UserController extends Controller
             return back()->withErrors($validator->errors());
 
         } else {
-            $user = User::whereLogin($request['login'])->wherePassword($request['password'])->where('status',['partner','registered'])->first();
+            $user = User::whereLogin($request['login'])->wherePassword($request['password'])->whereIn('status',['registered','partner'])->first();
 
             if (!$user){
                 return redirect()->route('LoginPage')->withErrors('Логин или пароль не верно');
@@ -190,6 +234,11 @@ class UserController extends Controller
         $data['user'] = User::find($user['id']);
 
         return view('edit', $data);
+    }
+    public function Account(){
+        $data['user'] = session()->get('user');
+
+        return view('account',$data);
     }
     public function EditUser(Request $request){
         $data['user'] = session()->get('user');
@@ -213,9 +262,11 @@ class UserController extends Controller
         if($validator->fails()){
             return back()->withErrors($validator->errors());
         }else{
-            
+            if($request['zhsn'] == 0){
             (new \App\Models\User)::where('id',$data['user']->id)->update($request->only(['password','email','name','phone']));
-            
+            }else{
+            (new \App\Models\User)::where('id',$data['user']->id)->update($request->only(['password','zhsn','email','name','phone']));  
+            }
             
 
 
@@ -227,6 +278,45 @@ class UserController extends Controller
         
 
 
+    }
+    public function MessageSend(Request $request){
+        $rules = [
+            'question'  => 'required|max:255',
+            'author' => 'required|max:255'
+
+        ];
+        $messages = [
+            "question.required" => "Введите ваш вопрос",
+            "author.required" => "Введите ваш аккаунт",
+            "question.max" =>"Максимальное количество символов 255"
+        ];
+        $validator = $this->validator($request->all(), $rules, $messages);
+        if($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else{
+
+            $message = new Message;
+            $message['question'] = $request['question'];
+
+            $message['author'] =$request['author'];
+
+
+            $message->save();
+
+            return back()->with('message','Отправлено');
+
+
+        }
+
+
+    }
+    public function MessagePage(){
+
+        $data['user'] = session()->get('user');
+        $user = $data['user'];
+
+        $data['messages'] = Message::where('author',$user['login'])->where('answer','!=',NULL)->paginate(3);
+        return view('message',$data);
     }
     public function Out(Request $request){
         session()->forget('user');
@@ -244,7 +334,7 @@ class UserController extends Controller
 
     public function Tree($userId = null){
         $user = Tree::join('users','users.id','tree.user_id')
-            ->select('tree.*','name','phone','login','bs_id','email');
+            ->select('tree.*','name','phone','login','email');
         if ($userId){
             $user = $user->find($userId);
         }else{

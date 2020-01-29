@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
 
             $table->integer('login');
+            $table->integer('zhsn',14);
             $table->string('phone',30);
             $table->string('email');
             $table->integer('bill',30);

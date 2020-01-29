@@ -100,6 +100,7 @@
                         <span>пользователи</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="{{route('admin.ProductView')}}">
                          <i class="material-icons">work_outline</i>
@@ -110,6 +111,18 @@
                     <a href="{{route('admin.ShopView')}}">
                         <i class="material-icons">shopping_cart</i>
                         <span>управление магазином</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('admin.BlackList')}}">
+                        <i class="material-icons">close</i>
+                        <span>Черный список</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('admin.MessagePage')}}">
+                        <i class="material-icons">mail</i>
+                        <span>Писма для тех поддержки</span>
                     </a>
                 </li>
                 <li>

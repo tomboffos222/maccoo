@@ -67,9 +67,9 @@
                         <li><a href=""><i class="material-icons">shopping_cart</i></a></li>
                         @if($user)
                         <li>
-                            <a href="" class="account">{{$user->login}}</a>
+                            <a href="" class="account">{{$user->name}}</a>
                             <ul class="dropdown">
-                                <li><a href="">Мой аккаунт</a></li>
+                                <li><a href="{{route('Account')}}">Мой аккаунт</a></li>
                                 @if($user['status'] == 'partner')
                                     <li><a href="{{route('Main')}}">Личный кабинет</a></li>
 
@@ -137,18 +137,17 @@
             </div>
             <div class="col-lg-3">
                 <h3>Мой аккаунт</h3>
-                @if($user['status'] == 'partner')
+                @if($user['status'] == 'registered')
+                <li><a href="{{route('Account')}}">Мой аккаунт</a></li>
+               
+                <li><a href="{{route('Out')}}">Выйти</a></li>
+
+                @elseif($user['status'] == 'partner') 
+                <li><a href="{{route('Account')}}">Мой аккаунт</a></li>
                 <li><a href="{{route('Main')}}">Личный кабинет</a></li>
                 <li><a href="{{route('Out')}}">Выйти</a></li>
                 
                 
-                @else
-                
-                <li><a href="">Напишите нам</a></li>
-                <li><a href="">Карта сайта</a></li>
-                <li><a href="">Политика конфиденциальности</a></li>
-                <li><a href="">О нас</a></li>
-                <li><a href="">Потребительские услуги</a></li>
                 @endif
             </div>
             <div class="col-lg-3">

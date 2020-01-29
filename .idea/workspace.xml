@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="07a05a10-5ae5-4374-8ba3-81bf9f4419ae" name="Default Changelist" comment="" />
+    <list default="true" id="07a05a10-5ae5-4374-8ba3-81bf9f4419ae" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/blacklisted.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/blacklisted.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/treeUser.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/treeUser.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/base.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/base.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/user.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/user.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/register.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/register.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/treeUser.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/treeUser.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +24,9 @@
     <execution>
       <executable />
     </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -101,6 +116,7 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1TCaVLVfza8dKCj2rzSHYKGBFmr" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -184,6 +200,7 @@
       <workItem from="1578304940460" duration="760000" />
       <workItem from="1579109598315" duration="3000" />
       <workItem from="1579261290470" duration="309000" />
+      <workItem from="1580020263466" duration="7000" />
     </task>
     <servers />
   </component>
@@ -195,10 +212,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="221" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1578221280686" />
-    <state x="397" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1579109597987">
+    <state x="397" y="279" key="com.intellij.ide.util.TipDialog" timestamp="1580020267344">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="397" y="282" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1579109597987" />
+    <state x="397" y="279" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1580020267344" />
     <state x="385" y="196" key="search.everywhere.popup" timestamp="1576322548331">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

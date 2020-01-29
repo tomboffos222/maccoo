@@ -11,12 +11,18 @@ Route::get('author','UserController@Authors')->name('Authors');
 Route::get('author/{authorId?}','UserController@Author')->name('Author');
 Route::get('shop/cateogy/{categoryId?}','UserController@Category')->name('Category');
 Route::get('search/','UserController@Search')->name('Search');
+
 Route::middleware(['userCheck'])->group(function () {
     Route::get('Main','UserController@Main')->name('Main');
     Route::get('out','UserController@Out')->name('Out');
     Route::get('tree/{userId?}','UserController@Tree')->name('Tree');
     Route::get('setting/edit', 'UserController@Edit')->name('Edit');
     Route::get('setting/edit/user','UserController@EditUser')->name('EditUser');
+    Route::get('message/page','UserController@MessagePage')->name('MessagePage');
+    Route::get('message/send','UserController@MessageSend')->name('MessageSend');
+    Route::get('account','UserController@Account')->name('Account');
+    Route::get('status/up', 'UserController@Up')->name('Up');
+    Route::get('account/up','UserController@AccountUp')->name('AccountUp');
 
 });
 
@@ -42,6 +48,9 @@ Route::name('admin.')->prefix('admin')->middleware(['adminCheck'])->group(functi
     Route::get('shop/view', 'AdminController@ShopView')->name('ShopView');
     Route::get('add/category','AdminController@CategoryAdd')->name('CategoryAdd');
     Route::get('author/add','AdminController@AuthorAdd')->name('AuthorAdd');
+    Route::get('message/page','AdminController@MessagePage')->name('MessagePage');
+    Route::get('message/answer','AdminController@MessageAnswer')->name('MessageAnswer');
+
 
 });
 

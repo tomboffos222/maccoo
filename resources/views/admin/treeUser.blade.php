@@ -18,7 +18,7 @@
                         <table class="table">
                             <tr>
                                 <td>ID</td>
-                                <td>{{$user->bs_id}}</td>
+                                <td>{{$user->id}}</td>
                             </tr>
                             <tr>
                                 <td>ФИО</td>
@@ -60,7 +60,7 @@
         @if($i < $maxColumnCount)
             @php
                 $users = \App\Models\Tree::join('users','users.id','tree.user_id')->where('parent_id',$user->id)
-                ->select('tree.*','name','phone','login','bs_id','email')
+                ->select('tree.*','name','phone','login','email')
                 ->get();
             @endphp
             @foreach($users as $user)

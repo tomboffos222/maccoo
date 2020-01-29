@@ -7,17 +7,19 @@
            <form class="col-md-4 col-md-offset-4" action="{{route("Register")}}" method="post">
                <h2>Регистрация</h2>
                {{csrf_field()}}
-               <div class="form-group">
-                   <label for="bs_id">Введите ваш ID</label>
-                   <input class="form-control" placeholder="Например 123456" type="text" required id="bs_id" name="bs_id">
-               </div>
-               <div class="form-group">
-                   <label for="login">Введите ваш Login</label>
-                   <input class="form-control" placeholder="" type="text" required id="login" name="login">
+              
+               
+                <div class="form-group">
+                   <label for="password">Введите ваш Пароль</label>
+                   <input class="form-control" placeholder="" type="password" required id="password" name="password">
                </div>
                <div class="form-group">
                    <label for="name">Введите ваше ФИО</label>
                    <input class="form-control" placeholder="Например Кайрат Нуртас" type="text" required id="name" name="name">
+               </div>
+               <div class="form-group">
+                 <label for="zhsn">Введите ИИН</label>
+                 <input type="number" class="form-control" id="zhsn" name="zhsn" required>
                </div>
                <div class="form-group">
                    <label for="email">Введите ваш Email</label>

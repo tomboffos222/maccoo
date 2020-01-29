@@ -5,7 +5,7 @@
         <label for="">
             Добавит  в черный список
         </label> <br>
-        <input type="number" placeholder="ИИН" name="zhsn"> <input type="submit">
+        <input type="number" placeholder="ИИН" name="zhsn" class=""> <input type="submit" class="btn btn-primary red">
     </form>
     <table class="table table-striped">
         <thead>
@@ -23,5 +23,8 @@
         @endforeach
         </tbody>
     </table>
+    <style>
+       
+    </style>
 
 @endsection
