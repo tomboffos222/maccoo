@@ -120,7 +120,7 @@
 				    			<p>
 				    				{{$product->author}}
 				    			</p>
-				    			<a href="" class="cart">
+				    			<a href="{{route('AddProduct',$product->id)}}" class="cart">
 				    				В корзину
 				    			</a>
 			    			</div>

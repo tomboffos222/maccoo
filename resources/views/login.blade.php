@@ -5,10 +5,10 @@
        <div class="row">
 
            <form class="col-md-4 col-md-offset-4" action="{{route("Login")}}" method="post">
-               <h2>Логин</h2>
+               <h2>Вход в систему</h2>
                {{csrf_field()}}
                <div class="form-group">
-                   <label for="login">Введите Логин</label>
+                   <label for="login">Введите ваш Id</label>
                    <input class="form-control" placeholder="" type="text" required id="login" name="login">
                </div>
                <div class="form-group">

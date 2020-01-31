@@ -11,6 +11,7 @@ Route::get('author','UserController@Authors')->name('Authors');
 Route::get('author/{authorId?}','UserController@Author')->name('Author');
 Route::get('shop/cateogy/{categoryId?}','UserController@Category')->name('Category');
 Route::get('search/','UserController@Search')->name('Search');
+Route::get('addProduct/{id?}', 'UserController@AddProduct')->name('AddProduct');
 
 Route::middleware(['userCheck'])->group(function () {
     Route::get('Main','UserController@Main')->name('Main');

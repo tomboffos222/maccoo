@@ -78,7 +78,7 @@
                 <img src="{{asset('admin-vendor/images/user.png')}}" width="48" height="48" alt="User" style="align-items:top; margin-right: 20px;" />
                 <div class="">
                     <b>
-                    Логин: {{$user->login}} <br>
+                    Id: {{$user->login}} <br>
                     Имя: {{$user->name}} <br>
                     
 

@@ -11,7 +11,88 @@ use App\Product;
 use App\Categories;
 use App\Message;
 class UserController extends Controller
+
 {
+    public function addProduct($id){
+        
+        $id = intval($id);
+
+        $productsInCart =  array();
+
+        
+        
+
+        if (session()->has('counter')) {
+            
+            session()->put('counter' , $productsInCart);
+
+            $productsInCart = session()->get('counter');
+
+
+        }
+        $counter  = session()->get('counter');
+        if (array_key_exists($id, $productsInCart)) {
+                $productsInCart[$id]++;
+                
+                session()->put('counter', $productsInCart);
+
+                 session()->save();
+
+
+            
+            
+
+
+                
+        }else{
+            $productsInCart[$id] = 1;
+            session()->put('counter', $productsInCart);
+
+            session()->save();
+                
+
+          
+            
+            
+        }
+        
+        dd(session()->all());
+
+
+        
+        return back()->with('message','Добавлено в корзину');
+
+
+
+       
+
+
+
+
+        
+       
+       
+
+
+        
+
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+    }
+
+    
+
     public function Up(){
         $user= session()->get('user');
 
@@ -50,6 +131,7 @@ class UserController extends Controller
 
 
 
+
         return view('home',$data);
     }
     public function Shop(){
@@ -84,37 +166,37 @@ class UserController extends Controller
                 $data['authors'] = Authors::get();
                 $data['categories'] = Categories::get();
                 if($request['author'] != 'All'){
-                
+
                 $data['products'] =Product::where('author','LIKE','%'.$request['author'].'%')->paginate(12);
                 $data['authors'] = Authors::get();
                 $data['categories'] = Categories::get();
-                
+
                 }
-                
+
                 # code...
             }elseif ($request['category'] != 'All') {
-                
+
                 $data['products'] =Product::where('chars','LIKE','%'.$request['category'].'%')->paginate(12);
                 $data['authors'] = Authors::get();
                 $data['categories'] = Categories::get();
                 if($request['author'] != 'All'){
-                
+
                 $data['products'] =Product::where('author','LIKE','%'.$request['author'].'%');
                 $data['products']  = $data['products']->where('chars','LIKE','%'.$request['category'].'%')->paginate(12);
 
                 $data['authors'] = Authors::get();
                 $data['categories'] = Categories::get();
-                
+
                 }
-                
+
                 # code...
             }
             return view('shop',$data);
 
-            
+
         }
 
-        
+
     }
     public function Product($productId){
         $products = Product::where('id','!=',$productId)->get();
@@ -181,7 +263,7 @@ class UserController extends Controller
 
             $user = new User;
 
-            
+
             $user['login'] = 000000+$lastuser['id']+1;
             $user['password'] = $request['password'];
 
@@ -265,9 +347,9 @@ class UserController extends Controller
             if($request['zhsn'] == 0){
             (new \App\Models\User)::where('id',$data['user']->id)->update($request->only(['password','email','name','phone']));
             }else{
-            (new \App\Models\User)::where('id',$data['user']->id)->update($request->only(['password','zhsn','email','name','phone']));  
+            (new \App\Models\User)::where('id',$data['user']->id)->update($request->only(['password','zhsn','email','name','phone']));
             }
-            
+
 
 
 
@@ -275,7 +357,7 @@ class UserController extends Controller
 
 
         }
-        
+
 
 
     }

@@ -64,7 +64,13 @@
                 <nav class="icons">
                     <ul>
                         <li><a href=""><i class="material-icons">search</i></a></li>
-                        <li><a href=""><i class="material-icons">shopping_cart</i></a></li>
+                        <li><a href="">
+                            <i class="material-icons">shopping_cart</i>
+                            
+
+                            
+
+                        </a></li>
                         @if($user)
                         <li>
                             <a href="" class="account">{{$user->name}}</a>
