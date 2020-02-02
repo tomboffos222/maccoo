@@ -47,7 +47,7 @@
 					<p>
 						{{$product->description}}
 					</p>
-					<a href="" class="cart_product">
+					<a href="{{route('AddProduct',$product->id)}}" class="cart_product">
 						Добавить в корзину
 					</a>
 					<hr>

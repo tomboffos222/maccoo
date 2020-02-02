@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\BlackListed;
 use App\Authors;
 use App\Categories;
-
+use App\Withdrawal;
 use App\Product;
 use App\Message;
 
@@ -28,6 +28,11 @@ class AdminController extends Controller
         return view('admin.shop',$data);
 
 
+    }
+    public function WithdrawShow(){
+        $data['withdraws'] = Withdrawal::join('users','users.id','=', 'withdrawals.user_id')->select('withdrawals.*','name','phone','login','email')->orderBy('created_at','desc')->paginate(12);
+
+        return view('admin.withdraws',$data);
     }
     public function Login(Request $request){
         $rules = [
@@ -64,6 +69,25 @@ class AdminController extends Controller
         $data['users'] = User::whereStatus('partner')->paginate(25);
         return view('admin.users',$data);
     }
+    public function WithdrawAllow($id){
+
+
+        $Withdrawal = Withdrawal::find($id);
+
+
+        $Withdrawal['withdraw_status'] = 'allowed';
+        $Withdrawal->save();
+        return back()->with('message','Одобрено');
+
+    }
+    public function WithdrawReject($id){
+        $Withdrawal = Withdrawal::find($id);
+
+
+        $Withdrawal['withdraw_status'] = 'rejected';
+        $Withdrawal->save();
+        return back()->with('message','Одобрено');
+    }   
     public function CategoryAdd(Request $request){
         $rules = [
             'category' => 'required|max:255'

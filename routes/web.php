@@ -12,7 +12,9 @@ Route::get('author/{authorId?}','UserController@Author')->name('Author');
 Route::get('shop/cateogy/{categoryId?}','UserController@Category')->name('Category');
 Route::get('search/','UserController@Search')->name('Search');
 Route::get('addProduct/{id?}', 'UserController@AddProduct')->name('AddProduct');
-
+Route::get('show/cart' , 'UserController@CartPage')->name('CartPage');
+Route::get('del/{id?}', 'UserController@DeleteProduct')->name('DeleteProduct');
+Route::get('delete/all','UserController@DeleteAll')->name('DeleteAll');
 Route::middleware(['userCheck'])->group(function () {
     Route::get('Main','UserController@Main')->name('Main');
     Route::get('out','UserController@Out')->name('Out');
@@ -24,6 +26,8 @@ Route::middleware(['userCheck'])->group(function () {
     Route::get('account','UserController@Account')->name('Account');
     Route::get('status/up', 'UserController@Up')->name('Up');
     Route::get('account/up','UserController@AccountUp')->name('AccountUp');
+    Route::get('withdraws/','UserController@WithdrawShow')->name('WithdrawShow');
+    Route::get('withdraw/create', 'UserController@WithdrawCreate')->name('WithdrawCreate');
 
 });
 
@@ -51,6 +55,9 @@ Route::name('admin.')->prefix('admin')->middleware(['adminCheck'])->group(functi
     Route::get('author/add','AdminController@AuthorAdd')->name('AuthorAdd');
     Route::get('message/page','AdminController@MessagePage')->name('MessagePage');
     Route::get('message/answer','AdminController@MessageAnswer')->name('MessageAnswer');
+    Route::get('withdraws', 'AdminController@WithdrawShow')->name('WithdrawShow');
+    Route::get('withdraw/allow/{withdrawId?}' , 'AdminController@WithdrawAllow')->name('WithdrawAllow');
+    Route::get('withdraw/reject/{withdrawId?}', 'AdminController@WithdrawReject')->name('WithdrawReject');
 
 
 });

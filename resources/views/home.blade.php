@@ -17,7 +17,7 @@
                             {{$slider->description}}
 
                         </p>
-                        <a href="" class="cart">
+                        <a href="{{route('AddProduct',$slider->id)}}" class="cart">
                             В корзину
                         </a>
                     </div>

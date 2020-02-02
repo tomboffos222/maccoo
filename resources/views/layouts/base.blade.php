@@ -64,9 +64,10 @@
                 <nav class="icons">
                     <ul>
                         <li><a href=""><i class="material-icons">search</i></a></li>
-                        <li><a href="">
+                        <li><a href="{{route('CartPage')}}">
                             <i class="material-icons">shopping_cart</i>
-                            
+                            <?php $count =  session()->get('count');?>
+                            <span class="" style="margin-left:2px;position:relative;top:-5px;">( {{$count}} )</span>
 
                             
 

@@ -100,7 +100,12 @@
                         <span>пользователи</span>
                     </a>
                 </li>
-
+                <li>
+                    <a href="{{route('admin.WithdrawShow')}}">
+                        <i class="material-icons">attach_money</i>
+                        <span>Выводы</span>
+                    </a>
+                </li>
                 <li>
                     <a href="{{route('admin.ProductView')}}">
                          <i class="material-icons">work_outline</i>

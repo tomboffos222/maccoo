@@ -111,6 +111,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('WithdrawShow')}}">
+                        <i class="material-icons">attach_money</i>
+                        <span>Выводы</span>
+                    </a>
+                </li>
+                <li>
                     <a href="">
                         <i class="material-icons">accessibility_new</i>
                         <span>Приглашенные пользователи</span>

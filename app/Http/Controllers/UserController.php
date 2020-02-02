@@ -9,6 +9,7 @@ use App\BlackListed;
 use App\Authors;
 use App\Product;
 use App\Categories;
+use App\Withdrawal;
 use App\Message;
 class UserController extends Controller
 
@@ -22,73 +23,202 @@ class UserController extends Controller
         
         
 
-        if (session()->has('counter')) {
-            
-            session()->put('counter' , $productsInCart);
-
-            $productsInCart = session()->get('counter');
+        $counter  = session()->get('cart');
 
 
-        }
-        $counter  = session()->get('counter');
-        if (array_key_exists($id, $productsInCart)) {
-                $productsInCart[$id]++;
-                
-                session()->put('counter', $productsInCart);
+        if (!empty($counter)) {
+ 
+            $counter =  session()->get('cart');
+            $productsInCart[$id] = 1;
 
-                 session()->save();
+         
+            if(array_key_exists($id, $counter)){
+                    $counter[$id]++;
 
+            }else{
+                    $newId = key($productsInCart);
+                    $counter[$newId] = 1;
 
-            
-            
+            }
 
-
+            session()->put('cart',$counter);
+            session()->save();
                 
         }else{
             $productsInCart[$id] = 1;
-            session()->put('counter', $productsInCart);
+            session()->put('cart', $productsInCart);
 
             session()->save();
-                
+        }
+        $counter = session()->get('cart');
+        if(!empty($counter)){
+            $count = 0;
 
-          
-            
+            foreach($counter  as $id => $quantity){
+                $count  = $count + $quantity;
+
+
+            }
+            session()->put('count', $count);
+            session()->save();
             
         }
-        
-        dd(session()->all());
-
 
         
         return back()->with('message','Добавлено в корзину');
 
 
+    }
+    public function DeleteProduct($id){
+        $id = intval($id);
+        $cart = session()->get('cart');
 
+        unset($cart[$id]);
+        session()->put('cart',$cart);
+        session()->save();
+        $new = session()->get('cart');
+
+        
+        if(!empty($new)){
+            $count = 0;
+
+            foreach($new  as $id => $quantity){
+                $count  = $count + $quantity;
+
+
+            }
+
+            session()->put('count', $count);
+
+
+            session()->save();
+
+            
+
+        }else{
+            $count = 0;
+            session()->put('count', $count);
+            session()->save();
+        }
+
+        return back()->with('message','Удалено с корзины');
+
+    }
+    public function WithdrawShow(){
+        $user = session()->get('user');
+        $data['user'] = User::find($user['id']);
+        $data['withdraws'] = Withdrawal::join('users', 'withdrawals.user_id', '=', 'users.id')->paginate(12);
+
+        
+        $user = User::find($user['id']);
+
+
+
+        return view('withdraw',$data);
+
+    }
+    public function WithdrawCreate(Request $request){
+        $rules = [
+            'amount' => 'required|max:1000000'
+        ];
+        $messages = [
+            "amount.required" => "Введите сумму для вывода средств",
+            "amount.max"  => "Максимальное количество средств для вывода 999999"
+        ];
+        $validator = $this->validator($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
+
+        }else{
+            $user = session()->get('user');
+            $user = User::find($user['id']);
+
+            $summary = $user['bill'] - $request['amount'];
+            if ($summary < 0) {
+
+                return back()->withErrors('Недостаточно средств');
+
+                # code...
+            }else{
+                $withdraw = new Withdrawal;
+                $withdraw['amount'] = $request['amount'];
+                $withdraw['user_id'] = $request['user_id'];
+                $withdraw['withdraw_status'] = 'sent';
+
+                $withdraw->save();
+
+
+                $user['bill'] = $summary;
+
+                $user->save();
+
+                return back()->with('message', 'Ваша заявка отправлена');
+
+            }
+        }
+    }
+    public function DeleteAll(){
+        
+        $counter = session()->get('cart');
+        $counter = array();
+        if (empty($counter)) {
+            session()->put('cart',$counter);
+
+            $count = 0;
+            session()->put('count', $count);
+            session()->save();
+            # code...
+        }
+        return redirect()->route('Home')->with('message','Все удалено с корзины');
+    }
+    public function CartPage(){
+        $cartItems = session()->get('cart');
+        $cartItems = array_keys($cartItems);
+
+        
+        
+        $data['products'] = Product::whereIn('id', $cartItems)->paginate(12);
+        $products = Product::whereIn('id', $cartItems)->get();
+
+
+        $cartSession = session()->get('cart');
+        $subTotal = 0;
+        foreach ($products as $product) {
+            
+                
+                
+                $cartSession[$product['id']] = intval($cartSession[$product['id']]);
+                $product['price'] = intval($product['price']);
+                
+                $subTotal += $cartSession[$product['id']] * $product['price'];
+                
+
+               
+                
+                
+
+            # code...
+           
+          
+        }
+            
+            session()->put('subTotals', $subTotal);
+            session()->save();
+
+
+     
+            # code...
+        
+
+
+
+
+
+        
+        return view('cart', $data);
        
-
-
-
-
         
-       
-       
-
-
-        
-
-        
-        
-        
-
-
-
-
-
-
-
-
-
-
     }
 
     
