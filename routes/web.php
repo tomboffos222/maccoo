@@ -15,6 +15,7 @@ Route::get('addProduct/{id?}', 'UserController@AddProduct')->name('AddProduct');
 Route::get('show/cart' , 'UserController@CartPage')->name('CartPage');
 Route::get('del/{id?}', 'UserController@DeleteProduct')->name('DeleteProduct');
 Route::get('delete/all','UserController@DeleteAll')->name('DeleteAll');
+Route::get('search/form', 'UserController@SearchForm')->name('SearchForm');
 Route::middleware(['userCheck'])->group(function () {
     Route::get('Main','UserController@Main')->name('Main');
     Route::get('out','UserController@Out')->name('Out');

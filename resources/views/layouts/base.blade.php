@@ -42,7 +42,7 @@
 </head>
 <header>
     <?php $user = session()->get('user')?>
-    
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3 logotype">
@@ -54,7 +54,7 @@
                         <li><a href="{{route('Home')}}">Главная</a></li>
                         <li><a href="/shop">Магазин</a></li>
                         <li><a href="">Блог</a></li>
-                        
+
                         <li><a href="{{route('Authors')}}">Авторы</a></li>
                         <li><a href="">Контакты</a></li>
                     </ul>
@@ -63,13 +63,13 @@
             <div class="col-lg-3">
                 <nav class="icons">
                     <ul>
-                        <li><a href=""><i class="material-icons">search</i></a></li>
+                        <li><a href="{{route('shop')}}"><i class="material-icons">search</i></a></li>
                         <li><a href="{{route('CartPage')}}">
                             <i class="material-icons">shopping_cart</i>
                             <?php $count =  session()->get('count');?>
                             <span class="" style="margin-left:2px;position:relative;top:-5px;">( {{$count}} )</span>
 
-                            
+
 
                         </a></li>
                         @if($user)
@@ -90,7 +90,7 @@
                              <ul class="dropdown">
                                 <li><a href="{{route('LoginPage')}}">Войти</a></li>
                                 <li><a href="{{route('RegisterPage')}}">Регистрация</a></li>
-                                
+
                             </ul>
 
                         @endif
@@ -125,7 +125,7 @@
             <div class="col-lg-3">
                 <h3>Напишите нам</h3>
                 <p>1998 Wall Street 707, <br> Washington DC, USA</p>
-                <p> 
+                <p>
                     bookmart@domain.com <br>
                     support@gmail.com
                 </p>
@@ -146,15 +146,15 @@
                 <h3>Мой аккаунт</h3>
                 @if($user['status'] == 'registered')
                 <li><a href="{{route('Account')}}">Мой аккаунт</a></li>
-               
+
                 <li><a href="{{route('Out')}}">Выйти</a></li>
 
-                @elseif($user['status'] == 'partner') 
+                @elseif($user['status'] == 'partner')
                 <li><a href="{{route('Account')}}">Мой аккаунт</a></li>
                 <li><a href="{{route('Main')}}">Личный кабинет</a></li>
                 <li><a href="{{route('Out')}}">Выйти</a></li>
-                
-                
+
+
                 @endif
             </div>
             <div class="col-lg-3">

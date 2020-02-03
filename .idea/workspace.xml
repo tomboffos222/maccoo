@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07a05a10-5ae5-4374-8ba3-81bf9f4419ae" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/cart.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/base.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/base.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/shop.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/shop.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +118,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -197,6 +203,8 @@
       <workItem from="1580387452941" duration="154000" />
       <workItem from="1580469597099" duration="163000" />
       <workItem from="1580584207966" duration="56000" />
+      <workItem from="1580729582329" duration="407000" />
+      <workItem from="1580731382508" duration="737000" />
     </task>
     <servers />
   </component>
@@ -208,10 +216,11 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="221" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1578221280686" />
-    <state x="397" y="279" key="com.intellij.ide.util.TipDialog" timestamp="1580469597440">
+    <state x="397" y="279" key="com.intellij.ide.util.TipDialog" timestamp="1580731383410">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="397" y="279" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1580469597440" />
+    <state x="397" y="279" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1580731383410" />
+    <state x="397" y="279" key="com.intellij.ide.util.TipDialog/0.23.1440.808@0.23.1440.808" timestamp="1580729586676" />
     <state x="385" y="196" key="search.everywhere.popup" timestamp="1576322548331">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

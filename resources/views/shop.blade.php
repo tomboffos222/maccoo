@@ -21,9 +21,9 @@
 	<div class="row">
 		<div class="col-lg-3 sidebar_shop">
 			<div class="searchbar">
-				<form action="">
-					<input type="text" placeholder="Поиск">
-					<button type="submit"><i class="material-icons">search</i></button>
+				<form action="{{route('SearchForm')}}" method="get">
+					<input type="text" placeholder="Поиск" name="name">
+					<button type="submit" style="top:-6px;"><i class="material-icons">search</i></button>
 				</form>
 			</div>
 
@@ -34,20 +34,20 @@
 				@foreach($categories as $category)
 				<li>
 					<a href="{{route('Category',$category->id)}}">{{$category->chars}}</a>
-					
+
 				</li>
 				@endforeach
-				
+
 			</div>
 			<div class="price">
-				
+
 			</div>
 			<div class="authors">
 				<a href="{{route('Authors')}}"><h1>Авторы</h1></a>
 				@foreach($authors as $author)
 				<li><a href="{{route('Author',$author->id)}}">{{$author->Name}}({{$author->Books}})</a></li>
 				@endforeach
-				
+
 			</div>
 			<div class="tags">
 				<h1>Tags</h1>
@@ -121,7 +121,7 @@
 			<hr>
 			<div class="row">
 			@foreach($products as $product)
-				
+
 					<div class="col-lg-4 booker">
 						<a href="{{route('Product',$product->id)}}">
 			    			<div class="book">
@@ -131,13 +131,13 @@
 				    			<h4>{{$product->title}}</h4>
 				    			<h5>{{$product->chars}}</h5>
 				    			<h6>{{$product->price}} KZT</h6>
-				    			
-				    		
-				    			
+
+
+
 			    			</div>
 			    		</a>
 		    		</div>
-				
+
 
 			@endforeach
 
@@ -145,7 +145,7 @@
 
 		</div>
 		<div class="col-lg-3">
-			
+
 		</div>
 		<div class="col-lg-9">
 			{{$products->links()}}
@@ -156,7 +156,7 @@
 
 <style>
 	.shopping_book{
-		padding:50px 0px; 
+		padding:50px 0px;
 	}
 	.booker .book{
 		text-align: left !important;

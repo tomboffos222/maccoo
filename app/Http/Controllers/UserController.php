@@ -15,23 +15,23 @@ class UserController extends Controller
 
 {
     public function addProduct($id){
-        
+
         $id = intval($id);
 
         $productsInCart =  array();
 
-        
-        
+
+
 
         $counter  = session()->get('cart');
 
 
         if (!empty($counter)) {
- 
+
             $counter =  session()->get('cart');
             $productsInCart[$id] = 1;
 
-         
+
             if(array_key_exists($id, $counter)){
                     $counter[$id]++;
 
@@ -43,7 +43,7 @@ class UserController extends Controller
 
             session()->put('cart',$counter);
             session()->save();
-                
+
         }else{
             $productsInCart[$id] = 1;
             session()->put('cart', $productsInCart);
@@ -61,13 +61,35 @@ class UserController extends Controller
             }
             session()->put('count', $count);
             session()->save();
-            
+
         }
 
-        
+
         return back()->with('message','Добавлено в корзину');
 
 
+    }
+    public function SearchForm(Request $request){
+        $rules = [
+            'name' => 'required|max:255'
+        ];
+        $messages = [
+            "name.required" => "Введите название книги или имя автора",
+            "name.max"=>"Максимальное количество символов 255"
+        ];
+        $validator = $this->validator($request->all(),$rules, $messages);
+
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
+
+
+
+        }else{
+            $data['products'] = Product::where('title', 'LIKE', '%'.$request['name'].'%')->orWhere('author','LIKE','%'.$request['name'].'%')->paginate(12);
+            $data['authors'] = Authors::get();
+            $data['categories'] = Categories::get();
+            return view('shop',$data);
+        }
     }
     public function DeleteProduct($id){
         $id = intval($id);
@@ -78,7 +100,7 @@ class UserController extends Controller
         session()->save();
         $new = session()->get('cart');
 
-        
+
         if(!empty($new)){
             $count = 0;
 
@@ -93,7 +115,7 @@ class UserController extends Controller
 
             session()->save();
 
-            
+
 
         }else{
             $count = 0;
@@ -109,7 +131,7 @@ class UserController extends Controller
         $data['user'] = User::find($user['id']);
         $data['withdraws'] = Withdrawal::join('users', 'withdrawals.user_id', '=', 'users.id')->paginate(12);
 
-        
+
         $user = User::find($user['id']);
 
 
@@ -159,7 +181,7 @@ class UserController extends Controller
         }
     }
     public function DeleteAll(){
-        
+
         $counter = session()->get('cart');
         $counter = array();
         if (empty($counter)) {
@@ -176,8 +198,8 @@ class UserController extends Controller
         $cartItems = session()->get('cart');
         $cartItems = array_keys($cartItems);
 
-        
-        
+
+
         $data['products'] = Product::whereIn('id', $cartItems)->paginate(12);
         $products = Product::whereIn('id', $cartItems)->get();
 
@@ -185,43 +207,43 @@ class UserController extends Controller
         $cartSession = session()->get('cart');
         $subTotal = 0;
         foreach ($products as $product) {
-            
-                
-                
+
+
+
                 $cartSession[$product['id']] = intval($cartSession[$product['id']]);
                 $product['price'] = intval($product['price']);
-                
-                $subTotal += $cartSession[$product['id']] * $product['price'];
-                
 
-               
-                
-                
+                $subTotal += $cartSession[$product['id']] * $product['price'];
+
+
+
+
+
 
             # code...
-           
-          
+
+
         }
-            
+
             session()->put('subTotals', $subTotal);
             session()->save();
 
 
-     
+
             # code...
-        
 
 
 
 
 
-        
+
+
         return view('cart', $data);
-       
-        
+
+
     }
 
-    
+
 
     public function Up(){
         $user= session()->get('user');
