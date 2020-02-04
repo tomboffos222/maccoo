@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Tree;
-
+use App\OrderProduct;
+use App\Orders;
 use Illuminate\Http\Request;
 use App\BlackListed;
 use App\Authors;
@@ -18,6 +19,16 @@ class AdminController extends Controller
 {
     public function LoginPage(){
         return view('admin.login');
+    }
+    public function Orders(){
+        $data['orders'] = Orders::paginate(12);
+        return view('admin.orders',$data);
+    }
+    public function OrdersView($id){
+        $data['order'] = Orders::find($id)->first();
+        $data['products'] = Product::join('order_products','products.id','=','order_products.productId')->select('products.*','quantity','orderId')->where('orderId',$id)->paginate(12);
+
+        return view('admin.orderview',$data);
     }
     public function Shopview(){
         $data['authors'] =  Authors::paginate(10);
@@ -87,7 +98,7 @@ class AdminController extends Controller
         $Withdrawal['withdraw_status'] = 'rejected';
         $Withdrawal->save();
         return back()->with('message','Одобрено');
-    }   
+    }
     public function CategoryAdd(Request $request){
         $rules = [
             'category' => 'required|max:255'
@@ -171,9 +182,9 @@ class AdminController extends Controller
 
         } else {
             $image = $request['image'];
-            
+
             $image = "{{asset('/uploads/image/".$image."')}}";
-            
+
             $author = new Authors;
 
             $author->Name = $request['name'];
@@ -194,9 +205,9 @@ class AdminController extends Controller
 
 
 
-         
-            
- 
+
+
+
         }
 
 
@@ -246,7 +257,7 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
-   
+
     public function AddBlackList(Request $request){
         $rules = [
             'zhsn' => 'required|max:14'
@@ -269,7 +280,7 @@ class AdminController extends Controller
         }
 
     }
-    
+
     public function Tree($userId = null){
 
         $user = Tree::join('users','users.id','tree.user_id')

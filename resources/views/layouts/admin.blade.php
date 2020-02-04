@@ -101,6 +101,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('admin.Orders')}}">
+                        <i class="material-icons">shopping_cart</i>
+                        <span>Заказы</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{route('admin.WithdrawShow')}}">
                         <i class="material-icons">attach_money</i>
                         <span>Выводы</span>
@@ -148,7 +154,7 @@
                         <span>Выход</span>
                     </a>
                 </li>
-                
+
             </ul>
         </div>
         <!-- #Menu -->

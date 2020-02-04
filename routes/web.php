@@ -60,6 +60,8 @@ Route::name('admin.')->prefix('admin')->middleware(['adminCheck'])->group(functi
     Route::get('message/answer','AdminController@MessageAnswer')->name('MessageAnswer');
     Route::get('withdraws', 'AdminController@WithdrawShow')->name('WithdrawShow');
     Route::get('withdraw/allow/{withdrawId?}' , 'AdminController@WithdrawAllow')->name('WithdrawAllow');
+    Route::get('orders','AdminController@Orders')->name('Orders');
+    Route::get('orders/view/{id?}','AdminController@OrdersView')->name('OrdersView');
     Route::get('withdraw/reject/{withdrawId?}', 'AdminController@WithdrawReject')->name('WithdrawReject');
 
 
