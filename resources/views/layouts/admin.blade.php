@@ -34,7 +34,7 @@
     @stack('css')
 </head>
 
-<body class="theme-red">
+<body class="theme-red" style="background-color: #7f8c8d;">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -59,7 +59,7 @@
 
 <!-- #END# Search Bar -->
 <!-- Top Bar -->
-<nav class="navbar">
+<nav class="navbar " style="background-color:#2c3e50;">
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
@@ -69,9 +69,9 @@
     </div>
 </nav>
 <!-- #Top Bar -->
-<section>
+<section >
     <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar">
+    <aside id="leftsidebar" class="sidebar" style="background-color: #2c3e50;">
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
@@ -94,7 +94,7 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">НАВИГАЦИЯ</li>
-                <li class="active">
+                <li class="">
                     <a href="{{route('admin.Users')}}">
                         <i class="material-icons">home</i>
                         <span>пользователи</span>
@@ -161,7 +161,8 @@
         <!-- Footer -->
     </aside>
 </section>
-<section class="content">
+
+<section class="content" >
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

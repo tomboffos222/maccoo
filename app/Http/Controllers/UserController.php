@@ -234,8 +234,8 @@ class UserController extends Controller
         $order['type_of_order'] = $request['type_of_order'];
 
         $order->save();
-
-        $products= Product::join('baskets','products.id','=','baskets.products')->select('products.*','quantity','total','user_id')->get();
+        $user = session()->get('user');
+        $products= Product::join('baskets','products.id','=','baskets.products')->select('products.*','quantity','total','user_id')->where('user_id',$user['id'])->get();
         foreach($products as $product) {
             $orderProducts = new OrderProduct;
             $orderProducts['orderId'] = $order['id'];
@@ -250,9 +250,9 @@ class UserController extends Controller
     }
     public function CartPage(){
 
-
-        $data['products'] = Product::join('baskets','products.id','=','baskets.products')->select('products.*','quantity','total','user_id')->paginate(12);
-        $products= Product::join('baskets','products.id','=','baskets.products')->paginate(12);
+        $user = session()->get('user');
+        $data['products'] = Product::join('baskets','products.id','=','baskets.products')->select('products.*','quantity','total','user_id')->where('user_id',$user['id'])->paginate(12);
+        $products= Product::join('baskets','products.id','=','baskets.products')->where('user_id',$user['id'])->paginate(12);
         $data['quantity']  = 0;
 
         foreach($products as $product){

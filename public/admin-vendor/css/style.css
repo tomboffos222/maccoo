@@ -7664,7 +7664,7 @@ fieldset[disabled] .form-control {
         -webkit-transform: scale(1);
         transform: scale(1); }
       .sidebar .menu .list a {
-        color: #747474;
+        color: #ecf0f1;
         position: relative;
         display: inline-flex;
         vertical-align: middle;
@@ -7678,7 +7678,7 @@ fieldset[disabled] .form-control {
           right: 15px; }
         .sidebar .menu .list a span {
           margin: 7px 0 7px 12px;
-          color: #333;
+          color: #ecf0f1;
           font-weight: bold;
           font-size: 14px;
           overflow: hidden; }
@@ -7709,7 +7709,9 @@ fieldset[disabled] .form-control {
           padding-left: 80px; }
         .sidebar .menu .list .ml-menu li .ml-menu .ml-menu li a {
           padding-left: 95px; }
-
+table{
+    background-color:#ecf0f1;
+}
 .right-sidebar {
   width: 280px;
   height: calc(100vh - 70px);
