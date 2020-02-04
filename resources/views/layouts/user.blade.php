@@ -34,7 +34,7 @@
     @stack('css')
 </head>
 
-<body class="theme-red">
+<body class="theme-red" style="background-color: #ececec;">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -59,7 +59,7 @@
 
 <!-- #END# Search Bar -->
 <!-- Top Bar -->
-<nav class="navbar">
+<nav class="navbar" style="background-color:#3498db;">
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
@@ -71,33 +71,33 @@
 <!-- #Top Bar -->
 <section>
     <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar">
+    <aside id="leftsidebar" class="sidebar" style="background-color:#3498db;">
         <!-- User Info -->
         <div class="user-info">
             <div class="image" style="display:flex;">
                 <img src="{{asset('admin-vendor/images/user.png')}}" width="48" height="48" alt="User" style="align-items:top; margin-right: 20px;" />
-                <div class="">
+                <div class="col-white">
                     <b>
                     Id: {{$user->login}} <br>
                     Имя: {{$user->name}} <br>
-                    
 
-                    <a href="{{route('Edit')}}" class="bg-primary-gradient btn" style="margin-top:10px;">
+
+                    <a href="{{route('Edit')}}" class=" btn red " style="margin-top:10px; color:#fff;" >
                         <img src="{{asset('admin-vendor/images/wheel.svg')}}" alt="" style="width:20px;margin-right: 10px;">
                         Редактровать
                     </a>
                 </div>
             </div>
             <div class="info-container">
-                
-               
+
+
             </div>
         </div>
         <!-- #User Info -->
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
-               
+
                 <li>
                     <a href="{{route('Main')}}">
                         <i class="material-icons">home</i>
@@ -140,7 +140,7 @@
                         <span>Письмо тех поддержке</span>
                     </a>
                 </li>
-                
+
                 <li>
                     <a href="{{route('Out')}}">
                         <i class="material-icons">undo</i>

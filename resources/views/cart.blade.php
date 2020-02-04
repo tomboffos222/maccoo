@@ -59,7 +59,7 @@
 		 {{$total}} KZT
         <form action="{{route('OrderForm')}}" method="get">
             <input type="hidden" name="total" value={{$total}}>
-            <input type="hidden" name="user_id" value=@if($user != null){{$user->id}}@else "0" @endif>
+
             <input type="hidden" name="quantity" value={{$quantity}}>
 
             <button type="submit" class="btn btn-primary m-l-25 p-t-10 p-b-10 red">Оплатить</button>

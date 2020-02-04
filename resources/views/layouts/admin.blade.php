@@ -34,7 +34,7 @@
     @stack('css')
 </head>
 
-<body class="theme-red" style="background-color: #7f8c8d;">
+<body class="theme-red" style="background-color: #ececec;">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -59,7 +59,7 @@
 
 <!-- #END# Search Bar -->
 <!-- Top Bar -->
-<nav class="navbar " style="background-color:#2c3e50;">
+<nav class="navbar " style="background-color:#3498db;">
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
@@ -71,7 +71,7 @@
 <!-- #Top Bar -->
 <section >
     <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar" style="background-color: #2c3e50;">
+    <aside id="leftsidebar" class="sidebar" style="background-color: #3498db;">
         <!-- User Info -->
         <div class="user-info">
             <div class="image">

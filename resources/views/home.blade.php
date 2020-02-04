@@ -19,7 +19,7 @@
 
                         </p>
                         <form action="{{route('AddProduct')}}">
-                            <input type="hidden" name="user_id"  value="{{$user->id}}">
+
                             <input type="hidden" name="product_id" value="{{$slider->id}}">
                             <button type="submit" class="cart">
                                 В корзину
@@ -127,7 +127,7 @@
 				    				{{$product->author}}
 				    			</p>
                                 <form action="{{route('AddProduct')}}">
-                                    <input type="hidden" name="user_id"  value="{{$user->id}}">
+
                                     <input type="hidden" name="product_id" value="{{$product->id}}">
                                     <button type="submit" class="cart">
                                         В корзину
