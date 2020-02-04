@@ -2,70 +2,89 @@
 
 namespace App\Http\Controllers;
 
+use App\Basket;
 use App\Models\Tree;
 use App\Models\User;
+use App\OrderProduct;
+use App\Orders;
 use Illuminate\Http\Request;
 use App\BlackListed;
 use App\Authors;
 use App\Product;
 use App\Categories;
+
 use App\Withdrawal;
 use App\Message;
 class UserController extends Controller
 
 {
-    public function addProduct($id){
+    public function addProduct(Request $request){
 
-        $id = intval($id);
+        $rules = [
+            'user_id' => 'required|max:255',
+            'product_id' => 'required|max:255'
+        ];
+        $messages = [
+            "user_id.required" => "Войдите чтобы добавить в корзину",
+            "product_id.required" => "Введите название книги или имя автора",
+            "user_id.max"=>"Максимальное количество символов 255"
+        ];
+        $validator = $this->validator($request->all(),$rules, $messages);
 
-        $productsInCart =  array();
-
-
-
-
-        $counter  = session()->get('cart');
-
-
-        if (!empty($counter)) {
-
-            $counter =  session()->get('cart');
-            $productsInCart[$id] = 1;
-
-
-            if(array_key_exists($id, $counter)){
-                    $counter[$id]++;
-
-            }else{
-                    $newId = key($productsInCart);
-                    $counter[$newId] = 1;
-
-            }
-
-            session()->put('cart',$counter);
-            session()->save();
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
 
         }else{
-            $productsInCart[$id] = 1;
-            session()->put('cart', $productsInCart);
+            $request['product_id'] = intval($request['product_id']);
+            $request['user_id'] = intval($request['user_id']);
+            $basket = Basket::where([
+                ['user_id', '=', $request['user_id']],
+                ['products', '=', $request['product_id']],
+            ])->first();
 
-            session()->save();
-        }
-        $counter = session()->get('cart');
-        if(!empty($counter)){
-            $count = 0;
+            if(!$basket) {
 
-            foreach($counter  as $id => $quantity){
-                $count  = $count + $quantity;
+                $basket = new Basket;
+
+                $basket['quantity'] = 1;
+                $basket['user_id'] = $request['user_id'];
+                $basket['products'] = $request['product_id'];
+                $product = Product::find($request['product_id']);
+
+                $basket['total'] = $basket['quantity'] * $product['price'];
+                $basket->save();
+
+            }else{
+                $basket['quantity']+=1;
+                $product = Product::find($request['product_id']);
+                $basket['total'] = $basket['quantity'] * $product['price'];
+
+
+                $basket->save();
+
+
+
+
 
 
             }
-            session()->put('count', $count);
-            session()->save();
+            $baskets =  Basket::where('user_id',$request['user_id'])->get();
+            $mainCount = 0;
+            foreach($baskets as $basket){
+                $mainCount = $mainCount + $basket['quantity'];
+            }
+            session()->put('count',$mainCount);
+            return back()->with('message','Добавлено в корзину');
+
 
         }
 
 
-        return back()->with('message','Добавлено в корзину');
+
+
+
+
+
 
 
     }
@@ -91,36 +110,34 @@ class UserController extends Controller
             return view('shop',$data);
         }
     }
-    public function DeleteProduct($id){
-        $id = intval($id);
-        $cart = session()->get('cart');
+    public function DeleteProduct(Request $request){
+        $rules = [
+            'user_id' => 'required|max:255',
+            'product_id' => 'required|max:255'
+        ];
+        $messages = [
+            "user_id.required" => "Войдите чтобы добавить в корзину",
+            "product_id.required" => "Введите название книги или имя автора",
+            "user_id.max"=>"Максимальное количество символов 255"
+        ];
+        $validator = $this->validator($request->all(),$rules, $messages);
 
-        unset($cart[$id]);
-        session()->put('cart',$cart);
-        session()->save();
-        $new = session()->get('cart');
-
-
-        if(!empty($new)){
-            $count = 0;
-
-            foreach($new  as $id => $quantity){
-                $count  = $count + $quantity;
-
-
-            }
-
-            session()->put('count', $count);
-
-
-            session()->save();
-
-
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
 
         }else{
-            $count = 0;
-            session()->put('count', $count);
-            session()->save();
+            $request['product_id'] = intval($request['product_id']);
+            $request['user_id'] = intval($request['user_id']);
+            $basket = Basket::where([
+                ['user_id', '=', $request['user_id']],
+                ['products', '=', $request['product_id']],
+            ])->first();
+            $basket->delete();
+
+
+
+
+
         }
 
         return back()->with('message','Удалено с корзины');
@@ -157,82 +174,95 @@ class UserController extends Controller
             $user = User::find($user['id']);
 
             $summary = $user['bill'] - $request['amount'];
+            $amount = $request['amount'];
             if ($summary < 0) {
 
                 return back()->withErrors('Недостаточно средств');
 
                 # code...
             }else{
-                $withdraw = new Withdrawal;
-                $withdraw['amount'] = $request['amount'];
-                $withdraw['user_id'] = $request['user_id'];
-                $withdraw['withdraw_status'] = 'sent';
-
-                $withdraw->save();
 
 
-                $user['bill'] = $summary;
 
-                $user->save();
+                $data['withdraw'] = $amount;
+                $data['summary'] = $summary;
+                $data['user'] = $user;
 
-                return back()->with('message', 'Ваша заявка отправлена');
+
+                return view('withdrawnext',$data);
 
             }
         }
     }
     public function DeleteAll(){
 
-        $counter = session()->get('cart');
-        $counter = array();
-        if (empty($counter)) {
-            session()->put('cart',$counter);
-
-            $count = 0;
-            session()->put('count', $count);
-            session()->save();
-            # code...
-        }
+        $user = session()->get('user');
+        $basket = Basket::where('user_id',$user['id'])->delete();
         return redirect()->route('Home')->with('message','Все удалено с корзины');
     }
+    public function OrderForm(Request $request){
+        $rules = [
+            'user_id' => 'required|max:255',
+            'quantity' => 'required|max:255',
+            'total' =>'required|max:255'
+        ];
+        $messages = [
+            "user_id.required" => "Войдите чтобы добавить в корзину",
+
+        ];
+        $validator = $this->validator($request->all(),$rules,$messages);
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else{
+            $data['total'] =$request['total'];
+
+            $data['quantity'] = $request['quantity'];
+            $data['total'] = $request['total'];
+        }
+        return view('order',$data);
+    }
+    public function OrderCreate(Request $request){
+        $order = new Orders;
+        $order['user_id'] = $request['user_id'];
+        $order['quantity'] = $request['quantity'];
+        $order['total']  = $request['total'];
+        $order['index'] =  $request['index'];
+        $order['phone_number'] = $request['phone_number'];
+        $order['address'] = $request['address'];
+        $order['region'] = $request['region'];
+        $order['city'] = $request['city'];
+        $order['type_of_order'] = $request['type_of_order'];
+
+        $order->save();
+
+        $products= Product::join('baskets','products.id','=','baskets.products')->select('products.*','quantity','total','user_id')->get();
+        foreach($products as $product) {
+            $orderProducts = new OrderProduct;
+            $orderProducts['orderId'] = $order['id'];
+            $orderProducts['productId'] = $product['id'];
+            $orderProducts['quantity'] = $product['quantity'];
+            $orderProducts->save();
+        }
+        return back()->with('message','Ваш заказ оформлен');
+
+
+
+    }
     public function CartPage(){
-        $cartItems = session()->get('cart');
-        $cartItems = array_keys($cartItems);
 
 
+        $data['products'] = Product::join('baskets','products.id','=','baskets.products')->select('products.*','quantity','total','user_id')->paginate(12);
+        $products= Product::join('baskets','products.id','=','baskets.products')->paginate(12);
+        $data['quantity']  = 0;
 
-        $data['products'] = Product::whereIn('id', $cartItems)->paginate(12);
-        $products = Product::whereIn('id', $cartItems)->get();
-
-
-        $cartSession = session()->get('cart');
-        $subTotal = 0;
-        foreach ($products as $product) {
-
-
-
-                $cartSession[$product['id']] = intval($cartSession[$product['id']]);
-                $product['price'] = intval($product['price']);
-
-                $subTotal += $cartSession[$product['id']] * $product['price'];
-
-
-
-
-
-
-            # code...
-
-
+        foreach($products as $product){
+            $data['quantity']  = $data['quantity'] + $product['quantity'];
         }
 
-            session()->put('subTotals', $subTotal);
-            session()->save();
-
-
-
-            # code...
-
-
+        $data['total']=0;
+        foreach($products as $product){
+            $data['total'] = $data['total']+$product['total'];
+        }
 
 
 

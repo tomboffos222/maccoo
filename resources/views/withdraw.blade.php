@@ -3,9 +3,9 @@
 
 @section('content')
 
-	<div class="container">
+	<div class="">
 		<div class="col-lg-3">
-			
+
 			<h4>Ваш баланс : {{$user->bill}} KZT</h4>
 			<h3>
 			История вывода
@@ -33,8 +33,8 @@
 		        </form>
 		      </div>
 		      <div class="modal-footer">
-		        
-		        
+
+
 		      </div>
 		    </div>
 		  </div>

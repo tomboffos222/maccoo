@@ -7563,7 +7563,7 @@ fieldset[disabled] .form-control {
     white-space: nowrap;
     position: relative;
     border-bottom: 1px solid #e9e9e9;
-    
+
     height: 135px; }
     .sidebar .user-info .image {
       margin-right: 12px;
@@ -8245,7 +8245,7 @@ header nav ul li{
 header nav a{
   text-transform: uppercase;
     font-family: Muli,sans-serif;
-    
+
     font-size: 14px;
     color: #2b2b2b;
     margin-right: 35px;
@@ -8278,7 +8278,7 @@ body{
 }
 .gift{
   padding: 50px 0px;
-  background-image: url(https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/banner2-2.jpg?id=7766); 
+  background-image: url(https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/banner2-2.jpg?id=7766);
 }
 
 .letter .row{
@@ -8313,7 +8313,7 @@ footer .col-lg-3 h3::before{
     content: "";
     width: 50%;
     height: 1px;
-    background: hsla(0,0%,67%,.25); 
+    background: hsla(0,0%,67%,.25);
 }
 footer .col-lg-3 h3{
   text-transform: uppercase;
@@ -8372,7 +8372,7 @@ form{
 
 .col-lg-3 .book img{
   width: 100%;
-  height: 270px;    
+  height: 270px;
 
 }
 .col-lg-4 .book img{
@@ -8414,7 +8414,7 @@ form{
 .book a:hover{
   text-decoration: none;
 }
-.book a.cart{
+.book a.cart , cart button.cart{
 
     display: inline-block;
     line-height: 45px;
@@ -8433,7 +8433,7 @@ form{
   margin-top: 40px;
 }
 
-.book_one h3{ 
+.book_one h3{
       color: #f86d72;
     font-size: 18px;
     text-transform: uppercase;
@@ -8505,7 +8505,7 @@ footer{
 }
 footer p{
   color: #666;
-    font-size: 14px;  
+    font-size: 14px;
     margin-bottom: 20px;
 }
 footer li{
@@ -8519,7 +8519,7 @@ footer li a{
 }
 .letter input[type='text']{
   height: 50px;
-  line-height: 50px;  
+  line-height: 50px;
       border: 0;
 background-color:rgb(245, 245, 245);
     font-weight: 300;
@@ -8528,7 +8528,7 @@ background-color:rgb(245, 245, 245);
 }
 
 .letter input[type='submit']{
-  background-color:rgb(245, 245, 245); 
+  background-color:rgb(245, 245, 245);
   border: none;
   width: 10%;
   margin-left: -10px;
@@ -8584,7 +8584,7 @@ background-color:rgb(245, 245, 245);
 
 }
 .search_form .col-lg-12 form{
-  
+
   display: flex;
   justify-content: space-between;
 }
@@ -8606,13 +8606,13 @@ button[type='submit'] i{
 }
 .author{
   height: 200px !important;
-  
+
 }
 .author_img{
   background: url(//wpbingosite.com/wordpress/bootin/wp-content/themes/bootin/css/../images/bg-brand.png) no-repeat;
   background-size: contain;
   height: 110px;
-  
+
 
 }
 .author_img img{
@@ -8664,7 +8664,7 @@ button[type='submit'] i{
 
   }
 .owl-dot{
-  background-color: rgba(248,109,114,.5) !important;  
+  background-color: rgba(248,109,114,.5) !important;
   width: 15px;
   height: 15px;
   border-radius: 25px;
@@ -8683,15 +8683,15 @@ button[type='submit'] i{
 }
 .featured_authors:after{
   content:" ";
-  
+
   display: block;
-  
+
   color:#000;
 
   width: 80%;
   text-align: center;
   margin-left: auto;
-  margin-right: auto;   
+  margin-right: auto;
   height: 2px;
   margin-top: 20px;
   background-color: #e6d08c;
@@ -8767,7 +8767,7 @@ button[type='submit'] i{
   top: 0;
 }
 .layers{
-  display: flex;  
+  display: flex;
 
 }
 .booker{
@@ -8843,22 +8843,22 @@ button[type='submit'] i{
 }
 
 .sidebar_shop .searchbar button[type='submit']{
-    
-    
+
+
     padding: 22px 22px;
     background: #f86d72;
-    
+
   left: -23px;
 
    border: none;
    position: relative;
-   top:-4px; 
+   top:-4px;
 }
 .sidebar_shop .searchbar button i{
   position: absolute;
   left: 80%;
   bottom:22%;
-  color:#fff; 
+  color:#fff;
 }
 
 .image_thumbnail img{
@@ -9047,7 +9047,7 @@ body{
 }
 .tablet{
   display: none;
-  
+
 
 }
 .tablet.active{
@@ -9065,8 +9065,8 @@ body{
   background-color: #fff;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
   align-items: flex-start;
-  top:50px; 
-  width: 50%; 
+  top:50px;
+  width: 50%;
   padding:10px 10px;
   font-size: 15px;
   z-index: 100;
@@ -9095,13 +9095,13 @@ margin-right: 20px;
 margin-left: 5px;
 }
 .level.green , .green{
-            
-            
+
+
 background-image: linear-gradient(58deg, #2bcd72 0, #9acd2b 100%);
 }
 .level.red, .red{
 background-image: linear-gradient(58deg, #ff4b5b 0, #ff7e4b 100%);
-         
+
 }
 .bg-primary-gradient{
 background-image: linear-gradient(58deg, #4c7cf3 0, #4cc6f3 100%);

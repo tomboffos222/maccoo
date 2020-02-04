@@ -11,42 +11,58 @@
 				<th>Название книги</th>
 				<th>Количество</th>
 				<th>Цена</th>
+                <th>Сумма</th>
 				<th>Действие</th>
-				
+
 			</tr>
 		</thead>
 		<tbody>
-			<?php $counter = session()->get('cart')?>
+
 
 			@foreach($products as $product)
 			<tr>
 				<td><img src="{{$product->image1}}" alt=""></td>
 				<td>{{$product->title}}</td>
 				<td>
+                    {{$product->quantity}}
+				</td>
 
-					@if(array_key_exists($product->id, $counter))
-							
-						{{$counter[$product->id]}}
-					@endif
-				</td>
-				<td>{{$product->price}}</td>
+				<td>{{$product->price}}KZT</td>
+                <td>
+                    {{$product->total}}KZT
+                </td>
 				<td>
-					<a href="{{Route('DeleteProduct',$product->id)}}" class="btn btn-danger">Удалить</a>
+                    @php
+                        $user = session()->get('user');
+
+                        @endphp
+                    <form action="{{route('DeleteProduct')}}" method="get">
+
+                        <input type="hidden" value="{{$user->id}}" name="user_id">
+                        <input type="hidden" name="product_id" value="{{$product->id}}">
+                        <button type="submit"  class="btn btn-danger">Удалить</button>
+                    </form>
+
 				</td>
-				
+
 			</tr>
 			@endforeach
 
 		</tbody>
-		
+
 	</table>
 	<div class="flex">
-		<?php $total = session()->get('subTotals');?>
-		{{$total}} KZT
-		<a href="" class="btn btn-primary red">
-			Оплатить
-		</a>
-		<a href="{{Route('DeleteAll')}}" class="btn btn-primary ">
+
+		 {{$total}} KZT
+        <form action="{{route('OrderForm')}}" method="get">
+            <input type="hidden" name="total" value={{$total}}>
+            <input type="hidden" name="user_id" value={{$user->id}}>
+            <input type="hidden" name="quantity" value={{$quantity}}>
+
+            <button type="submit" class="btn btn-primary m-l-25 p-t-10 p-b-10 red">Оплатить</button>
+
+        </form>
+		<a href="{{Route('DeleteAll')}}" class="btn btn-primary p-t-10">
 			Очистить корзину
 		</a>
 	</div>
@@ -54,7 +70,7 @@
 <style>
 
 	 .container.main{
-		padding:100px 0px; 
+		padding:100px 0px;
 	}
 	.flex{
 		display: flex;
@@ -66,7 +82,7 @@
 		margin-left: 20px;
 	}
 	td{
-		width: 25%;	
+		width: 25%;
 	}
 	td img{
 		width: 100%;

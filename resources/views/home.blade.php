@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="owl-carousel4 owl-carousel">
+        <?php $user = session()->get('user') ?>
         @foreach($sliders as $slider)
             <div class="owl_slider_product">
                 <div class="slider_item">
@@ -17,11 +18,16 @@
                             {{$slider->description}}
 
                         </p>
-                        <a href="{{route('AddProduct',$slider->id)}}" class="cart">
-                            В корзину
-                        </a>
+                        <form action="{{route('AddProduct')}}">
+                            <input type="hidden" name="user_id"  value="{{$user->id}}">
+                            <input type="hidden" name="product_id" value="{{$slider->id}}">
+                            <button type="submit" class="cart">
+                                В корзину
+                            </button>
+                        </form>
+
                     </div>
-                    
+
                 </div>
             </div>
         @endforeach
@@ -57,8 +63,8 @@
     			<img src="https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/policy-3.png" alt="">
     			<div class="">
     				<h3>
-    					
-                        Со скидкой 
+
+                        Со скидкой
     				</h3>
     				<p>
     					Получите хорошую скидку на наш продукт с самым высоким рейтингом каждое воскресенье.
@@ -76,7 +82,7 @@
                         @foreach($categories as $category)
     					<option value="{{$category->chars}}">{{$category->chars}}</option>
                         @endforeach
-    					
+
     				</select>
     				<select name="author" id="">
                         <option value="All">Все Авторы</option>
@@ -84,7 +90,7 @@
 
     					<option value="{{$author->Name}}">{{$author->Name}}</option>
                         @endforeach
-    					
+
     				</select>
     				<button type="submit">
     					<i class="material-icons">
@@ -120,14 +126,18 @@
 				    			<p>
 				    				{{$product->author}}
 				    			</p>
-				    			<a href="{{route('AddProduct',$product->id)}}" class="cart">
-				    				В корзину
-				    			</a>
+                                <form action="{{route('AddProduct')}}">
+                                    <input type="hidden" name="user_id"  value="{{$user->id}}">
+                                    <input type="hidden" name="product_id" value="{{$product->id}}">
+                                    <button type="submit" class="cart">
+                                        В корзину
+                                    </button>
+                                </form>
 			    			</div>
 		    			</div>
 		    		</a>
 	    		@endforeach
-	    		
+
 	    	</div>
 	    </div>
     </div>
@@ -152,7 +162,7 @@
 
     				</h5>
     				<p>
-    					Эта книга поменяла мировоззрение не одному человеку на планете. Ведь представление о деньгах у многих граждан довольно стереотипное и устаревшее. Поэтому и живут такие люди всю жизнь работая на свои «пассивы», то есть машины, квартиры и дома, не вылезая из долгов и кредитов. 
+    					Эта книга поменяла мировоззрение не одному человеку на планете. Ведь представление о деньгах у многих граждан довольно стереотипное и устаревшее. Поэтому и живут такие люди всю жизнь работая на свои «пассивы», то есть машины, квартиры и дома, не вылезая из долгов и кредитов.
 
 
 
@@ -168,7 +178,7 @@
     	</div>
     </div>
     <div class="" style=" background-image: url(https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/banner2-1.jpg?id=7763);">
-    	
+
 
     </div>
     <div class="featured_authors">
@@ -178,24 +188,24 @@
     			<div class="col-lg-12">
 
     				<div class="author">
-    					
+
     					<div class="author_img">
     						<img src="{{$author->image1}}" alt="">
 
     					</div>
     					<span class="badge">#1</span>
-    					<a href="{{route('Author',$author->id)}}" class="name_author"> 
+    					<a href="{{route('Author',$author->id)}}" class="name_author">
     						<span>{{$author->Name}}</span>
     					</a> <br>
     					<a href="{{route('Author',$author->id)}}" class="counter">
     						<span>{{$author->Books}} выпущенные книги </span>
     					</a>
-    					
+
     				</div>
-    				
+
     			</div>
     			@endforeach
-    			
+
 
     		</div>
     	</div>
@@ -262,7 +272,7 @@
                             Книга Ника Вуйчича является номером один среди мотивационных книг
                         </p>
                     </div>
-    				
+
     			</div>
     			</div>
     		</div>
@@ -293,12 +303,28 @@
     		</div>
     	</div>
     </div>
-   
+    <style>
+        .book a.cart ,button.cart{
+
+            display: inline-block;
+            line-height: 45px;
+            padding: 0 40px;
+            color: #ababab;
+            text-transform: capitalize;
+            box-shadow: 0 13px 29.4px 0.6px rgba(43,43,43,.25);
+            font-weight: 600;
+            border: 1px solid #f86d72;
+            position: relative;
+            background: #f86d72;
+            color: #fff !important;
+        }
+
+    </style>
 @endsection
 
-	
 
 
 
 
- 
+
+
