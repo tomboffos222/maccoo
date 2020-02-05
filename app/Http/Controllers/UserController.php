@@ -21,13 +21,12 @@ class UserController extends Controller
     public function addProduct(Request $request){
 
         $rules = [
-            'user_id' => 'required|max:255',
             'product_id' => 'required|max:255'
         ];
         $messages = [
-            "user_id.required" => "Войдите чтобы добавить в корзину",
+
             "product_id.required" => "Введите название книги или имя автора",
-            "user_id.max"=>"Максимальное количество символов 255"
+
         ];
         $validator = $this->validator($request->all(),$rules, $messages);
 
@@ -232,6 +231,7 @@ class UserController extends Controller
         }
     }
     public function OrderCreate(Request $request){
+
         $user = session()->get('user');
         if($user == null) {
             return back()->withErrors('message','Войдите чтобы воспользоваться корзиной');

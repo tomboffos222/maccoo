@@ -43,13 +43,17 @@
 							В наличий
 						@endif
 					</h3>
-				
+
 					<p>
 						{{$product->description}}
 					</p>
-					<a href="{{route('AddProduct',$product->id)}}" class="cart_product">
-						Добавить в корзину
-					</a>
+                    <form action="{{route('AddProduct')}}">
+
+                        <input type="hidden" name="product_id" value="{{$product->id}}">
+                        <button type="submit" class="cart">
+                            В корзину
+                        </button>
+                    </form>
 					<hr>
 					<h3><span>Категория: </span>{{$product->chars}}</h3>
 					<h3><span>Автор: </span>{{$product->author}}</h3>
@@ -80,5 +84,26 @@
 		</div>
 	</div>
 </div>
+<style>
+    form{
+        text-align: left;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .book a.cart ,button.cart{
 
+        display: inline-block;
+        line-height: 45px;
+        padding: 0 40px;
+        color: #ababab;
+        text-transform: capitalize;
+        box-shadow: 0 13px 29.4px 0.6px rgba(43,43,43,.25);
+        font-weight: 600;
+        border: 1px solid #f86d72;
+        position: relative;
+        background: #f86d72;
+        color: #fff !important;
+    }
+
+</style>
 @endsection
