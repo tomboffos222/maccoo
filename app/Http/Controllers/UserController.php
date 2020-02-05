@@ -231,35 +231,51 @@ class UserController extends Controller
         }
     }
     public function OrderCreate(Request $request){
-
-        $user = session()->get('user');
-        if($user == null) {
-            return back()->withErrors('message','Войдите чтобы воспользоваться корзиной');
+        $rules = [
+            'index'=> 'required|max:255',
+            'phone_number' => 'required|max:255',
+            'address' => 'required|max:255',
+            'region' => 'required|max:255',
+            'city' => 'required|max:255'
+        ];
+        $messages = [
+           "index.required" => "Введите индекс",
+            "phone_number.required" => "Введите номер телефона",
+            "region.required" =>"Введите регион",
+            "city.required" => "Введите свой город"
+        ];
+        $validator = $this->validator($request->all(),$rules,$messages);
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
         }else {
-            $order = new Orders;
-            $order['user_id'] = $user['id'];
-            $order['quantity'] = $request['quantity'];
-            $order['total'] = $request['total'];
-            $order['index'] = $request['index'];
-            $order['phone_number'] = $request['phone_number'];
-            $order['address'] = $request['address'];
-            $order['region'] = $request['region'];
-            $order['city'] = $request['city'];
-            $order['type_of_order'] = $request['type_of_order'];
-
-            $order->save();
             $user = session()->get('user');
-            $products = Product::join('baskets', 'products.id', '=', 'baskets.products')->select('products.*', 'quantity', 'total', 'user_id')->where('user_id', $user['id'])->get();
-            foreach ($products as $product) {
-                $orderProducts = new OrderProduct;
-                $orderProducts['orderId'] = $order['id'];
-                $orderProducts['productId'] = $product['id'];
-                $orderProducts['quantity'] = $product['quantity'];
-                $orderProducts->save();
-            }
-            return back()->with('message', 'Ваш заказ оформлен');
-        }
+            if ($user == null) {
+                return back()->withErrors('message', 'Войдите чтобы воспользоваться корзиной');
+            } else {
+                $order = new Orders;
+                $order['user_id'] = $user['id'];
+                $order['quantity'] = $request['quantity'];
+                $order['total'] = $request['total'];
+                $order['index'] = $request['index'];
+                $order['phone_number'] = $request['phone_number'];
+                $order['address'] = $request['address'];
+                $order['region'] = $request['region'];
+                $order['city'] = $request['city'];
+                $order['type_of_order'] = $request['type_of_order'];
 
+                $order->save();
+                $user = session()->get('user');
+                $products = Product::join('baskets', 'products.id', '=', 'baskets.products')->select('products.*', 'quantity', 'total', 'user_id')->where('user_id', $user['id'])->get();
+                foreach ($products as $product) {
+                    $orderProducts = new OrderProduct;
+                    $orderProducts['orderId'] = $order['id'];
+                    $orderProducts['productId'] = $product['id'];
+                    $orderProducts['quantity'] = $product['quantity'];
+                    $orderProducts->save();
+                }
+                return back()->with('message', 'Ваш заказ оформлен');
+            }
+        }
 
     }
     public function CartPage(){

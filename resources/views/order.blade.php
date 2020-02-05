@@ -30,7 +30,7 @@
                         <input type="number" placeholder="Почтовый индекс"  class="form-control" name="index">
                     </div>
 
-                   <div class=""><input type="number" class="form-control" placeholder="Телефон" required name="phone_number"></div>
+                   <div class=""><input type="tel" class="form-control" placeholder="Телефон" required name="phone_number"></div>
                    <div class=""><input type="text" class="form-control" placeholder="Адрес" required name="address"></div>
                    <div class=""><input type="text" class="form-control" placeholder="Регион" required name="region"></div>
                    <div class=""><input type="text" class="form-control" placeholder="Город" required name="city"></div>
