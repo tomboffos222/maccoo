@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBlackListedsTable extends Migration
+class CreateArticleCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateBlackListedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('black_listeds', function (Blueprint $table) {
+        Schema::create('article_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('zhsn',14);
+            $table->string('title',255);
+
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateBlackListedsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('black_listeds');
+        Schema::dropIfExists('article_categories');
     }
 }

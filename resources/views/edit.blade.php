@@ -9,6 +9,7 @@
 
 
 		</div>
+
 		<div class="">
 			<label for="email" class="">Ваше ФИО</label>
 			<input type="text" class="form-control" name="name" placeholder="Ваша почта" value="{{$user->name}}">
@@ -30,7 +31,7 @@
 		<div class="" style="margin-top:20px;">
 			<input type="submit" class="btn red ">
 		</div>
-		
+
 	</form>
 	<style>
 		form{

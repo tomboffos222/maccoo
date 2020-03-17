@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
+use App\Article_category;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Tree;
 use App\OrderProduct;
 use App\Orders;
+use App\Product_image;
+use Faker\Provider\Image;
 use Illuminate\Http\Request;
 use App\BlackListed;
 use App\Authors;
 use App\Categories;
+use Illuminate\Http\UploadedFile;
 use App\Withdrawal;
 use App\Product;
 use App\Message;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -31,7 +38,7 @@ class AdminController extends Controller
         return view('admin.orderview',$data);
     }
     public function Shopview(){
-        $data['authors'] =  Authors::paginate(10);
+
         $data['categories'] = Categories::paginate(10);
 
 
@@ -44,6 +51,81 @@ class AdminController extends Controller
         $data['withdraws'] = Withdrawal::join('users','users.id','=', 'withdrawals.user_id')->select('withdrawals.*','name','phone','login','email')->orderBy('created_at','desc')->paginate(12);
 
         return view('admin.withdraws',$data);
+    }
+    public function CreateProduct(Request $request){
+        $rules = [
+            'image' => 'required|max:5120',
+            'title' => 'required',
+            'price'=> 'required',
+            'category'=>'required',
+
+            'description'=>'required|max:255',
+            'stock'=>'required',
+
+        ];
+        $messages = [
+            "image.required" => "Выберите фото",
+            "title.required" =>  "Введите название книги",
+            "price.required" => "Введите цену",
+            "category.required" => "Выберите категорию",
+
+            "description.required" => "Введите описание",
+            "description.max" => "Максимальное число символов в описании 255",
+            "stock.required" => "Пометьте как товар в наличии",
+        ];
+        $validator = $this->validator($request->all(),$rules, $messages);
+
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
+
+        }else{
+
+
+            $product = new Product;
+            $product['title'] = $request['title'];
+            $product['price'] = $request['price'];
+            $product['cat_id'] = $request['category'];
+
+            $product['size'] = $request['size'];
+            $product['type_of_material'] = $request['type'];
+
+            $product['description'] = $request['description'];
+
+            if ($request->has('stock')){
+                $product['status'] = 1;
+
+            }
+
+
+
+            if ($request->hasFile('image')){
+
+
+
+
+
+                $image = $request->file('image');
+                $name = Str::random(20).'.'.$image->getClientOriginalExtension();
+                $destinationPath = public_path('/images');
+                $image->move($destinationPath, $name);
+
+
+
+
+
+
+
+
+                $product['img'] = '/images/'.$name;
+
+            }
+
+            $product->save();
+
+            return back()->with('message','Добавлено ');
+
+
+        }
     }
     public function Login(Request $request){
         $rules = [
@@ -77,7 +159,7 @@ class AdminController extends Controller
         return redirect()->route('admin.LoginPage')->withErrors('Вы вышли');
     }
     public function Users(Request $request){
-        $data['users'] = User::whereStatus('partner')->paginate(25);
+        $data['users'] = User::paginate(25);
         return view('admin.users',$data);
     }
     public function WithdrawAllow($id){
@@ -90,6 +172,67 @@ class AdminController extends Controller
         $Withdrawal->save();
         return back()->with('message','Одобрено');
 
+    }
+    public  function CreatePost(){
+        $data['cats'] = Article_category::get();
+        $data['articles']= Article::paginate(5);
+
+        return view('admin.post',$data);
+    }
+    public  function Posts(){
+        $data['cats'] = Article_category::get();
+        $data['articles']= Article::paginate(5);
+
+        return view('admin.view_posts',$data);
+    }
+    public function StoreArticle( Request $request){
+        $rules = [
+            'title' => 'required',
+            'text' => 'required',
+            'cat_id' =>  'required',
+            'author' => 'required',
+            'path' => 'required|mimes:jpeg,bmp,png'
+        ];
+        $messages = [
+            'title.required' => 'Введиет название',
+            'text.required' => 'Введите текст поста',
+            'cat_id.required' => 'Выбериете категорию',
+            'author.required' => 'Введите имя автора',
+            'path.required'=> 'Выберите файл',
+            'path.mimes' => 'Файл должен быть в формате jpg,png ,bmp',
+        ];
+        $validator = $this->validator($request->all(),$rules,$messages);
+
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else {
+            if ($request->hasFile('path')) {
+                $article = new Article();
+                $article['title'] = $request['title'];
+                $article['text'] = $request['text'];
+                $article['cat_id'] = $request['cat_id'];
+                $article['views'] = 0;
+                $article['author'] = $request['author'];
+                $img = $request['path'];
+                $imgName = Str::random(20) . '.' . $img->getClientOriginalName();
+                $path = public_path() . '/images/';
+                $img->move($path, $imgName);
+                $article['path'] = '/images/' . $imgName;
+
+                $article->save();
+
+                return back()->with('message', 'Добавлено');
+            }
+
+        }
+    }
+    public function  upload(Request $request){
+        $path =  public_path().'/images/';
+        $file = $request->file('file');
+        $filename = Str::random(20) .'.' . $file->getClientOriginalExtension() ?: 'png';
+        $img = Image::make($file);
+        $img->save($path . $filename);
+        echo '/images/'.$filename;
     }
     public function WithdrawReject($id){
         $Withdrawal = Withdrawal::find($id);
@@ -119,6 +262,28 @@ class AdminController extends Controller
             $category->save();
 
             return back()->withMessage('Добавлено');
+        }
+    }
+    public function PostCatAdd(Request $request){
+        $rules = [
+            'category' => 'required|max:255'
+
+        ];
+        $messages = [
+            "category.requred"  => "Введите категорию"
+        ];
+
+        $validator  = $this->validator($request->all(), $rules, $messages);
+
+        if($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else{
+            $category = new Article_category();
+            $category->name = $request['category'];
+
+            $category->save();
+
+            return back()->with('message','Добавлено');
         }
     }
     public function BlackList(){
@@ -245,7 +410,7 @@ class AdminController extends Controller
     }
     public function ProductView(){
         $data['categories'] = Categories::get();
-        $data['authors'] = Authors::get();
+
 
         $data['products'] = Product::where('status','1')->paginate(10);
         return view('admin.product',$data);
@@ -292,6 +457,77 @@ class AdminController extends Controller
             $user = $user->first();
         }
         return view('admin.tree',['user'=>$user]);
+    }
+    public function ViewPost($articleId){
+        $data['cats']  = Article_category::get();
+        $data['article'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->where('articles.id',$articleId)->select('articles.*', 'name')->orderBy('created_at', 'desc')->first();
+
+
+
+        return view('admin.view_post',$data);
+
+    }
+    public function DeletePost($articleId){
+        $article = Article::find($articleId);
+        $article->delete();
+        return back()->with('message','Удалено');
+    }
+    public function EditPost(Request $request){
+        $rules = [
+            'title' => 'required',
+            'text' => 'required',
+            'cat_id' =>  'required',
+            'author' => 'required',
+            'path' => 'mimes:jpeg,bmp,png',
+            'article_id' => 'required'
+        ];
+        $messages = [
+            'title.required' => 'Введиет название',
+            'text.required' => 'Введите текст поста',
+            'cat_id.required' => 'Выбериете категорию',
+            'author.required' => 'Введите имя автора',
+            'article_id.required' =>' Введите id',
+            'path.mimes' => 'Файл должен быть в формате jpg,png ,bmp',
+        ];
+        $validator = $this->validator($request->all(),$rules,$messages);
+
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else {
+            if ($request->hasFile('path')) {
+
+                $article['title'] = $request['title'];
+                $article['text'] = $request['text'];
+                $article['cat_id'] = $request['cat_id'];
+                $article['views'] = 0;
+                $article['author'] = $request['author'];
+                $img = $request['path'];
+                $imgName = Str::random(20) . '.' . $img->getClientOriginalName();
+                $path = public_path() . '/images/';
+                $img->move($path, $imgName);
+                $article['path'] = '/images/' . $imgName;
+
+                $article->save();
+
+                return back()->with('message', 'Добавлено');
+            }else{
+                $article = new Article();
+                $article['title'] = $request['title'];
+                $article['text'] = $request['text'];
+                $article['cat_id'] = $request['cat_id'];
+                $article['views'] = 0;
+                $article['author'] = $request['author'];
+                $img = $request['path'];
+                $imgName = Str::random(20) . '.' . $img->getClientOriginalName();
+                $path = public_path() . '/images/';
+                $img->move($path, $imgName);
+                $article['path'] = '/images/' . $imgName;
+
+                $article->save();
+            }
+
+        }
+
     }
 
     function AddUserToMatrix($user_id){

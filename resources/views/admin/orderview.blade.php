@@ -36,7 +36,7 @@
 
                     @foreach($products as $product)
                         <tr>
-                            <td><img src="{{$product->image1}}" alt=""></td>
+                            <td><img src="{!! $product->img !!}" alt=""></td>
                             <td>{{$product->title}}</td>
                             <td>
                                 {{$product->quantity}}

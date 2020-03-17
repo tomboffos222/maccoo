@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTreesTable extends Migration
+class CreateProductImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateTreesTable extends Migration
      */
     public function up()
     {
-        Schema::create('trees', function (Blueprint $table) {
+        Schema::create('product_images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->unique();
-            $table->integer('parent_id');
-            $table->string('parents',100);
-            $table->integer('level')->default(0);
-            $table->integer('row')->default(0);
+            $table->integer('product_id');
+            $table->string('image',255);
+            $table->string('path',255);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -32,6 +29,6 @@ class CreateTreesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trees');
+        Schema::dropIfExists('product_images');
     }
 }

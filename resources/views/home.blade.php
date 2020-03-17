@@ -1,330 +1,216 @@
 @extends('layouts.base')
 
+
+
 @section('content')
-    <div class="owl-carousel4 owl-carousel">
-        <?php $user = session()->get('user') ?>
-        @foreach($sliders as $slider)
-            <div class="owl_slider_product">
-                <div class="slider_item">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="primary margin-15">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="owl-carousel owl-theme js section_margin line_hoz animate-box" id="slideshow_face">
+                                @foreach($articles as $article)
+                                <div class="item">
+                                    <figure class="alith_post_thumb_big">
+                                        <span class="post_meta_categories_label">{{$article->name}}</span>
+                                        <a href="{{route('Article',$article->id)}}"><img src="{{asset($article->path)}}" alt="" style="width: 100%;"/></a>
+                                    </figure>
+                                    <h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
+                                        <a href="{{route('Article',$article->id)}}" style="text-transform: uppercase;">{{$article->title}}</a>
+                                    </h3>
+                                    <div class="alith_post_content_big">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-12">
+                                                <div class="post_meta_center animate-box">
 
-                    <div class="image_slider">
-                        <img src="{{$slider->image1}}" alt="">
+                                                    <p><a href="page-author.html" class="author"><strong>{{$article->author}}</strong></a></p>
+                                                    <span class="post_meta_date">{{$article->created_at}}.</span>
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @endforeach
+
+                            </div>
+                            <div class="post_list post_list_style_1">
+
+                                <div class="alith_heading">
+                                    <h2 class="alith_heading_patern_2">Недавние Посты</h2>
+                                </div>
+                                @foreach($NewArticles as $newArticle)
+                                    <article class="row section_margin animate-box">
+                                        <div class="col-md-3 animate-box">
+                                            <figure class="alith_news_img"><a href="{{route('Article',$newArticle->id)}}" ><img src="{!!  $newArticle->path !!}" alt=""/></a></figure>
+                                        </div>
+                                        <div class="col-md-9 animate-box">
+                                            <h3 class="alith_post_title"><a href="{{route('Article',$newArticle->id)}}" style="text-transform: uppercase;">{{$newArticle->title}}</a></h3>
+                                            <div class="post_meta">
+
+
+                                                <span class="meta_categories">Автор: {{$newArticle->author}} </span>
+                                                <span class="meta_date">{{$newArticle->created_at}}</span>
+                                            </div>
+                                        </div>
+                                    </article>
+
+                                @endforeach
+                                {{$NewArticles->links()}}
+
+
+
+                            </div>
+                        </div>
+                        <!--Start Sidebar-->
+                        <aside class="col-md-4 sidebar_right">
+                            <div class="sidebar-widget animate-box">
+                                <div class="widget-title-cover"><h4 class="widget-title"><span>Популярные статьи</span></h4></div>
+                                <div class="latest_style_1">
+                                    @foreach($articles as $article)
+                                    <div class="latest_style_1_item">
+                                        <span class="item-count vertical-align"></span>
+                                        <div class="alith_post_title_small">
+                                            <a href="{{route('Article',$article->id)}}"><strong>{{$article->title}}</strong></a>
+                                            <p class="meta"><span>{{$article->created_at}}</span> <span>{{$article->views}} просмотров</span></p>
+                                        </div>
+                                        <figure class="alith_news_img"><a href="{{route('Article',$article->id)}}"><img style="height: 100px;width: 100%;" src="{!!$article->path  !!}" alt=""/></a></figure>
+                                    </div>
+                                    @endforeach
+
+                                </div>
+                            </div> <!--.sidebar-widget-->
+
+                            <div class="sidebar-widget animate-box">
+                                <div class="widget-title-cover"><h4 class="widget-title"><span>Поиск</span></h4></div>
+                                <form action="{{route('Search')}}" class="search-form" method="get" role="search">
+                                    <label>
+                                        <input type="search" name="search" value="" placeholder="Поиск …" class="search-field">
+                                    </label>
+                                    <input type="submit" value="Поиск" class="search-submit">
+                                </form>
+                            </div> <!--.sidebar-widget-->
+
+                            <div class="sidebar-widget animate-box">
+                                <div class="widget-title-cover"><h4 class="widget-title"><span>Трендовый</span></h4></div>
+                                <div class="latest_style_2">
+                                    <div class="latest_style_2_item_first">
+                                        <figure class="alith_post_thumb_big">
+                                            <span class="post_meta_categories_label">{{$popularArticle->name}}</span>
+                                            <a href="{{route('Article',$popularArticle->id)}}"><img src="{!! $popularArticle->path   !!}" alt=""/></a>
+                                        </figure>
+                                        <h3 class="alith_post_title">
+                                            <a href="{{route('Article',$popularArticle->id)}}" style="text-transform: uppercase"><strong>{{$popularArticle->title}}</strong></a>
+                                        </h3>
+                                    </div>
+
+                                </div>
+                            </div> <!--.sidebar-widget-->
+
+                            <div class="sidebar-widget animate-box">
+                                <div class="widget-title-cover"><h4 class="widget-title"><span>Облако тегов</span></h4></div>
+                                <div class="alith_tags_all">
+                                    @foreach($cats as $cat)
+                                        <a href="{{route('ArticleCategory',$cat->id)}}" class="alith_tagg">{{$cat->name}}</a>
+
+                                    @endforeach
+
+                                </div>
+                            </div> <!--.sidebar-widget-->
+
+                        </aside>
+                        <!--End Sidebar-->
                     </div>
-                    <div class="info_slider">
-                        <h2>{{$slider->title}}</h2>
-                        <h3> {{$slider->author}} </h3>
-                        <p>
-                            {{$slider->description}}
+                </div> <!--.primary-->
 
-                        </p>
-                        <form action="{{route('AddProduct')}}">
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container animate-box">
+                <div class="bottom margin-15">
+                    <div class="row">
 
-                            <input type="hidden" name="product_id" value="{{$slider->id}}">
-                            <button type="submit" class="cart">
-                                В корзину
-                            </button>
-                        </form>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <div class="sidebar-widget">
+                                <div class="widget-title-cover"><h4 class="widget-title"><span>Самый последний</span></h4></div>
+                                <div class="latest_style_2">
+                                    @foreach($NewArticles as $newArticle)
+                                    <div class="latest_style_2_item">
+                                        <figure class="alith_news_img"><a href="{{route('Article',$newArticle->id)}}"><img alt="" src="{!! $newArticle->path !!}" class="hover_grey"></a></figure>
+                                        <h3 class="alith_post_title"><a href="{{route('Article',$newArticle->id)}}">{{$newArticle->title}}</a></h3>
 
-                    </div>
+                                    </div>
+                                    @endforeach
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <div class="sidebar-widget">
+                                <div class="widget-title-cover"><h4 class="widget-title"><span>Категории</span></h4></div>
+                                <ul class="bottom_menu">
+                                    @foreach($cats as $cat)
+                                    <li><a href="{{route('ArticleCategory',$cat->id)}}" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; {{$cat->name}}</a></li>
+                                    @endforeach
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <div class="sidebar-widget">
+                                <div class="widget-title-cover"><h4 class="widget-title"><span>Инстаграм</span></h4></div>
+                                <ul class="alith-instagram-grid-widget alith-clr alith-row alith-gap-10">
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/9LlBP644jm-X_5jrHH0TRBaLmqw=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/04/29/78/54/5b/86/78545b867be4dbe30e53a338514e4f95_1.jpg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/10QaCI9GTYhjU0adQO_-Dy-Lb6Q=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/04/26/4c/c4/8a/b0/4cc48ab06b23e19eb716ec9aebf1acf8_1.jpg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/-IlyVqmWWT4R-aJ23B5ccAxnG7U=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/04/24/87/8e/32/92/878e329232adfdb0649d04a2fab2ab14_1.jpg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/hsEroRBRAND1vZlUGuhXMuiGXiA=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/04/17/0c/86/24/8a/0c86248afd149ac77e1ad654ed0e8001.jpg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/mNAVJW4WIKlA1PdH4cBpFoJ5OMs=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/04/08/b2/e5/45/27/b2e545275db2408448ff0b15a1c97639_1.jpg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/0uwFm1TuT5ZX3b7hFUP6iDBfMl0=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/03/06/00/b5/9e/06/00b59e06036425e4d82f27fd74fc2968_1.jpg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/ZctACUVxGyQkcC6xSQaiP0qTmzo=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/03/10/88/40/f3/98/8840f398c57ab1f76170951d3f2aa184.jpeg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/Dyda7nJZohS3H6mYPacZp2FyKTo=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/04/09/cc/91/86/5f/cc91865faff1e085cacb6e39f762ad3b.jpg">
+                                        </a>
+                                    </li>
+                                    <li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+                                        <a class="" target="_blank" href="index.html#">
+                                            <img class="" title="" alt="" src="http://thumb.hommes.kz/D3SjIOf7X4nLE4nVzVF_dhwhekI=/700x700/smart/http://hommes.kz/media/blog/entries/photos/2019/03/04/7a/28/04/42/7a28044221e97b083d9d239ac13623bf.jpg">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> <!--.row-->
                 </div>
             </div>
-        @endforeach
-    </div>
-    <div class="container second_screen">
-    	<div class="row">
-    		<div class="col-lg-4">
-    			<img src="https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/policy-1.png" alt="">
-    			<div class="">
-    				<h3>
-    					Бесплатная доставка
-    				</h3>
-    				<p>
-    					Выберите между широким спектром текстовых книг и медиа.
-
-    				</p>
-    			</div>
-    		</div>
-    		<div class="col-lg-4">
-    			<img src="https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/policy-2.png" alt="">
-    			<div class="">
-    				<h3>
-    					Быстрая доставка
-    				</h3>
-    				<p>
-    					Наслаждайтесь бесплатной доставкой и нашей быстрой доставкой.
-
-    				</p>
-    			</div>
-
-    		</div>
-    		<div class="col-lg-4">
-    			<img src="https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/policy-3.png" alt="">
-    			<div class="">
-    				<h3>
-
-                        Со скидкой
-    				</h3>
-    				<p>
-    					Получите хорошую скидку на наш продукт с самым высоким рейтингом каждое воскресенье.
-
-    				</p>
-    			</div>
-    		</div>
-    	</div>
-    	<hr>
-    	<div class="row search_form">
-    		<div class="col-lg-12">
-    			<form action="{{route('Search')}}">
-    				<select name="category" id="">
-                        <option value="All">Все категории</option>
-                        @foreach($categories as $category)
-    					<option value="{{$category->chars}}">{{$category->chars}}</option>
-                        @endforeach
-
-    				</select>
-    				<select name="author" id="">
-                        <option value="All">Все Авторы</option>
-                        @foreach($authors as $author)
-
-    					<option value="{{$author->Name}}">{{$author->Name}}</option>
-                        @endforeach
-
-    				</select>
-    				<button type="submit">
-    					<i class="material-icons">
-    						search
-    					</i>
-    					Искать книгу
-    				</button>
-
-    			</form>
-    		</div>
-
-    	</div>
-    </div>
-
-    <div class="books" style="background-color: #f5f5f5 !important;">
-    	<div class="container">
-	    	<div class="row">
-	    		<div class="col-lg-12" style="text-align: center;">
-	    			<h2>
-	    				Популярные книги
-	    			</h2>
-	    		</div>
-	    		@foreach($products as $product)
-		    		<a href="{{route('Product',$product->id)}}" >
-		    			<div class="col-lg-4">
-			    			<div class="book  book_index">
-								<h1>
-									<img src="{{$product->image1}}" alt="">
-								</h1>
-				    			<h4>{{$product->title}}</h4>
-				    			<h6>{{$product->price}} KZT</h6>
-				    			<h5>{{$product->chars}}</h5>
-				    			<p>
-				    				{{$product->author}}
-				    			</p>
-                                <form action="{{route('AddProduct')}}">
-
-                                    <input type="hidden" name="product_id" value="{{$product->id}}">
-                                    <button type="submit" class="cart">
-                                        В корзину
-                                    </button>
-                                </form>
-			    			</div>
-		    			</div>
-		    		</a>
-	    		@endforeach
-
-	    	</div>
-	    </div>
-    </div>
-    <div class="book_one">
-    	<div class="container">
-    		<div class="row">
-    			<div class="col-lg-5">
-    				<h3>
-    					Лучшая книга
-
-    				</h3>
-    				<a href="">
-    					<h1>
-    						Богатый папа бедный папа
-    					</h1>
-    				</a>
-    				<h4>
-    					от <a>Роберта Кийосаки</a>
-    				</h4>
-    				<h5>
-    					3500 KZT
-
-    				</h5>
-    				<p>
-    					Эта книга поменяла мировоззрение не одному человеку на планете. Ведь представление о деньгах у многих граждан довольно стереотипное и устаревшее. Поэтому и живут такие люди всю жизнь работая на свои «пассивы», то есть машины, квартиры и дома, не вылезая из долгов и кредитов.
-
-
-
-    				</p>
-    				<a href="" class="cart">
-    					В корзину
-    				</a>
-    			</div>
-    			<div class="col-lg-7">
-    				<img src="https://img2.wbstatic.net/big/new/7820000/7821786-1.jpg" alt="" style="height: 800px;margin-top:-100px;">
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    <div class="" style=" background-image: url(https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/04/banner2-1.jpg?id=7763);">
-
-
-    </div>
-    <div class="featured_authors">
-    	<div class="container">
-    		<div class="row owl-carousel owl-carousel2">
-    			@foreach($authors as $author)
-    			<div class="col-lg-12">
-
-    				<div class="author">
-
-    					<div class="author_img">
-    						<img src="{{$author->image1}}" alt="">
-
-    					</div>
-    					<span class="badge">#1</span>
-    					<a href="{{route('Author',$author->id)}}" class="name_author">
-    						<span>{{$author->Name}}</span>
-    					</a> <br>
-    					<a href="{{route('Author',$author->id)}}" class="counter">
-    						<span>{{$author->Books}} выпущенные книги </span>
-    					</a>
-
-    				</div>
-
-    			</div>
-    			@endforeach
-
-
-    		</div>
-    	</div>
-    </div>
-
-    <div class="gift" style="text-align: center;">
-    	<div class="container">
-    		<div class="row">
-    			<div class="col-lg-12">
-    				<h1>
-    					Прекрасный подарок
-
-    				</h1>
-    				<h2>
-    					Подари своим родным книгу в подарок!
-
-    				</h2>
-    				<a href="/shop">
-    					В магазин
-    				</a>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    <div class="events">
-    	<div class="container">
-    		<div class="row">
-    			<div class="col-lg-12">
-    				<h1>События</h1>
-
-    			</div>
-    			<div class="col-lg-12">
-    				<div class="owl-carousel owl-carousel1">
-    				<div class="col-lg-12 carousel_part">
-	    				<img src="https://www.hongkongdividendstocks.com/wp-content/uploads/2019/10/5.jpg" alt="">
-	    				<h1>Получи 5% скидки</h1>
-	    				<p>от <span>Admin</span> Апрель 17, 2017	</p>
-	    				<p>
-                            При регистрации на бонусную систему вы получаете  5% скидки на дальнейшие покупки книг
-	    				</p>
-	    			</div>
-	    			<div class="col-lg-12 carousel_part">
-	    				<img src="https://cdn.worldvectorlogo.com/logos/whatsapp-symbol.svg" alt="">
-	    				<h1>Пиши на Whatsapp </h1>
-                        <p>от <span>Admin</span> Апрель 17, 2017    </p>
-                        <p>
-                            По всем вопросом вы можете написать на Whatsapp и вас проконсультируют в течение 60 секунд
-                        </p>
-	    			</div>
-	    			<div class="col-lg-12 carousel_part">
-	    				<img src="http://enlik.kz/images/book.png" alt="">
-	    				<h1>В магазинах Marwin</h1>
-                        <p>от <span>Admin</span> Апрель 17, 2017    </p>
-                        <p>
-                            В сети магазинов Marwin появилось книга нашей отечествинницы Енлік Абдикадір.
-                            Название книги "Бриллиант леди"
-                        </p>
-    				</div>
-                    <div class="col-lg-12 carousel_part">
-                        <img src="https://justtralala.com/wp-content/uploads/2016/07/zhizn-bez-granic-nik-vuichich-otzyv.jpg" alt="">
-                        <h1>Лучшая книга</h1>
-                        <p>от <span>Admin</span> Апрель 17, 2017    </p>
-                        <p>
-                            Книга Ника Вуйчича является номером один среди мотивационных книг
-                        </p>
-                    </div>
-
-    			</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    <div class="letter">
-    	<div class="container">
-    		<div class="row">
-	    			<div class="col-lg-4" class="imager">
-	    				<img src="https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/07/banner1-5.jpg" alt="">
-	    			</div>
-	    			<div class="col-lg-4">
-	    				<h1>
-	    					Присоединяйтесь к сообществу
-	    				</h1>
-	    				<p>
-	    					Прочитать новости
-	    				</p>
-	    				<form action="">
-	    					<input type="text" placeholder="Ваша почта...">
-	    					<input type="submit" value=">">
-	    				</form>
-	    			</div>
-	    			<div class="col-lg-4" class="imager">
-	    				<img src="https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/07/banner1-4.jpg" alt="">
-	    			</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    <style>
-        .book a.cart ,button.cart{
-
-            display: inline-block;
-            line-height: 45px;
-            padding: 0 40px;
-            color: #ababab;
-            text-transform: capitalize;
-            box-shadow: 0 13px 29.4px 0.6px rgba(43,43,43,.25);
-            font-weight: 600;
-            border: 1px solid #f86d72;
-            position: relative;
-            background: #f86d72;
-            color: #fff !important;
-        }
-
-    </style>
+        </div>
 @endsection
-
-
-
-
-
-
-

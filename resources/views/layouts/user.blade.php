@@ -110,36 +110,7 @@
                         <span>На сайт</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('WithdrawShow')}}">
-                        <i class="material-icons">attach_money</i>
-                        <span>Выводы</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <i class="material-icons">accessibility_new</i>
-                        <span>Приглашенные пользователи</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <i class="material-icons">how_to_reg</i>
-                        <span>Боты</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('Tree')}}">
-                        <i class="material-icons">view_comfy</i>
-                        <span>Матрица</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('MessagePage')}}">
-                        <i class="material-icons">mail</i>
-                        <span>Письмо тех поддержке</span>
-                    </a>
-                </li>
+
 
                 <li>
                     <a href="{{route('Out')}}">

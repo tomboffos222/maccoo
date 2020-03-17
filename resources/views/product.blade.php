@@ -3,107 +3,91 @@
 
 
 @section('content')
-<div class="page_title" style="background-image:url(https://wpbingosite.com/wordpress/bootin/wp-content/uploads/2019/05/Breadcumd.jpg);">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 page_title" >
-				<h1>
-					Магазин
-				</h1>
-				<div class="breadcrumb">
-					<a href="/">Главная</a><span class="delimiter"></span><a href="/shop" class="">Магазин</a><span class="delimiter"></span><a href="{{route('Product',$product->id)}}" class="active">{{$product->title}}</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="product">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-2 image_thumbnail" >
-				<div class=""><img src="{{$product->image1}}" alt=""></div>
-				<div class=""><img src="{{$product->image2}}" alt=""></div>
-				<div class=""><img src="{{$product->image3}}" alt=""></div>
-			</div>
-			<div class="col-lg-4 image_promo">
-				<div class=""><img src="{{$product->image1}}" alt=""></div>
-			</div>
-			<div class="col-lg-6">
-				<div class="information_description">
-					<h1>
-						{{$product->title}}
-					</h1>
-					<h2>
-						{{$product->price}}
-					</h2>
-					<hr>
-					<h3>
-						@if($product['status']==1)
+    <link rel="shortcut icon" href="http://static.hommes.kz/s/favicon.png?v=1" type="image/png">
 
-							В наличий
-						@endif
-					</h3>
 
-					<p>
-						{{$product->description}}
-					</p>
-                    <form action="{{route('AddProduct')}}">
+    <meta property="fb:app_id" content="1504499143206143">
 
-                        <input type="hidden" name="product_id" value="{{$product->id}}">
-                        <button type="submit" class="cart">
-                            В корзину
-                        </button>
-                    </form>
-					<hr>
-					<h3><span>Категория: </span>{{$product->chars}}</h3>
-					<h3><span>Автор: </span>{{$product->author}}</h3>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="related_products">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<h1 style="margin-bottom: 100px;">Рекомендованные продукты</h1>
-				<div class="owl-carousel owl-carousel3">
-					@foreach($products as $key)
-					<a href="{{route('Product',$key->id)}}" style="color:inherit;">
-						<div class="product_slider">
-							<img src="{{$key->image1}}" alt="">
-							<h3>{{$key->title}}</h3>
-							<h4><span>от </span> {{$key->author}}</h4>
-							<h5 class="price">{{$key->price}}</h5>
 
-						</div>
-					</a>
-					@endforeach
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<style>
-    form{
-        text-align: left;
-        padding-top: 40px;
-        padding-bottom: 40px;
-    }
-    .book a.cart ,button.cart{
 
-        display: inline-block;
-        line-height: 45px;
-        padding: 0 40px;
-        color: #ababab;
-        text-transform: capitalize;
-        box-shadow: 0 13px 29.4px 0.6px rgba(43,43,43,.25);
-        font-weight: 600;
-        border: 1px solid #f86d72;
-        position: relative;
-        background: #f86d72;
-        color: #fff !important;
-    }
 
-</style>
+    <link rel="stylesheet" href="http://static.hommes.kz/s/_compress/lightbox/css/lightbox.css?232cea54">
+    <link rel="stylesheet" href="http://static.hommes.kz/s/_compress/css/style.css?7776954f">
+    <link rel="stylesheet" href="{{asset('assets/css/tovary.css')}}">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12" style="font-size: 25px;">
+                <span class="glyphicon glyphicon-shopping-cart my-cart-icon"><span class="badge badge-notify my-cart-badge"></span></span>
+            </div>
+
+            <div class="col-md-8 col-xs-12 left-block">
+                <ul class="breadcrumb"><li><a href="/">Главная</a></li><li><a href="{{route('shop')}}"> STORE</a></li><li class="active">{{$product->title}}</li></ul>
+                <div class="col-sm-12">
+                    <h1>{{$product->title}}</h1>
+                </div>
+                <div class="col-sm-12">
+                    <div class="product-slider">
+
+                        <img src="{!! $product->img !!}" alt="" class="img-responsive m-b-25" style="height: 600px;width: 100%;">
+
+
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <h3>Цена:&nbsp;{{$product->price}}&nbsp;₸&nbsp;
+
+
+
+                        &nbsp;&nbsp;
+                        <button class="btn  btn-danger my-cart-btn" data-id="{{$product->id}}_" data-id_real="{{$product->id}}" data-name="{{$product->title}}"
+
+                                data-summary="{{$product->description}}" data-price="{{$product->price}}" data-quantity="1" data-image="{!! $product->img !!}">В корзину</button>
+                    </h3>
+                </div>
+
+                <br>
+                <div class="col-sm-12 content">
+                    <p>{{$product->description}}. &nbsp;</p><p>@if($product->size != null){{$product->size}}@endif</p><p>Доставка - бесплатная при заказе от 2 кг и выше</p><p>По всем вопросам - +7 777 777 75 73</p><hr id="horizontalrule">
+                    <p><strong>Самовывоз:</strong> ул. Хаджимукана, 59, ЖК ILE DE FRANCE, 9 подъезд, </p><p>Вход слева от подъезда</p>
+                    <br>
+                </div>
+
+
+
+
+
+
+            </div>
+            <div class="col-md-4 col-xs-12 right-block2">
+
+
+                <div class="top-news">
+                    <div class="block-head">Новые новости</div>
+                    <div class="top-news-slider_">
+                        @foreach($NewArticles as $article)
+                        <div class="top">
+                            <a href="{{route('Article',$article->id)}}">
+                                <div class="content-img">
+                                    <img src="{!! $article->path !!}" alt="WISHLIST: Что дарят друг другу на 14 февраля Айдос и Мольдер Рысалиевы? " class="img-responsive">
+                                </div>
+                                <div class="content">
+                                    <div class="content-head">{{$article->name}}</div>
+                                    <div class="content-text">{{$article->title}}</div>
+                                </div>
+                            </a>
+                        </div>
+                        @endforeach
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="http://static.hommes.kz/s/_compress/js/style.js?9fba8d3d"></script>
+
+    <script src="{{asset('assets/js/card.js')}}"></script>
 @endsection

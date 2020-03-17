@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
+use App\Article_category;
 use App\Basket;
 use App\Models\Tree;
 use App\Models\User;
@@ -9,12 +11,14 @@ use App\OrderProduct;
 use App\Orders;
 use Illuminate\Http\Request;
 use App\BlackListed;
-use App\Authors;
+
 use App\Product;
 use App\Categories;
 
 use App\Withdrawal;
 use App\Message;
+use phpDocumentor\Reflection\Types\This;
+
 class UserController extends Controller
 
 {
@@ -248,12 +252,10 @@ class UserController extends Controller
         if ($validator->fails()){
             return back()->withErrors($validator->errors());
         }else {
-            $user = session()->get('user');
-            if ($user == null) {
-                return back()->withErrors('message', 'Войдите чтобы воспользоваться корзиной');
-            } else {
+
+
                 $order = new Orders;
-                $order['user_id'] = $user['id'];
+
                 $order['quantity'] = $request['quantity'];
                 $order['total'] = $request['total'];
                 $order['index'] = $request['index'];
@@ -264,17 +266,19 @@ class UserController extends Controller
                 $order['type_of_order'] = $request['type_of_order'];
 
                 $order->save();
-                $user = session()->get('user');
-                $products = Product::join('baskets', 'products.id', '=', 'baskets.products')->select('products.*', 'quantity', 'total', 'user_id')->where('user_id', $user['id'])->get();
-                foreach ($products as $product) {
+
+
+
+                foreach ($request['products'] as $product) {
+                    $product = explode(',',$product);
                     $orderProducts = new OrderProduct;
                     $orderProducts['orderId'] = $order['id'];
-                    $orderProducts['productId'] = $product['id'];
-                    $orderProducts['quantity'] = $product['quantity'];
+                    $orderProducts['productId'] = $product[0];
+                    $orderProducts['quantity'] = $product[1];
                     $orderProducts->save();
                 }
-                return back()->with('message', 'Ваш заказ оформлен');
-            }
+                return redirect()->route('shop')->with('message', 'Ваш заказ оформлен');
+
         }
 
     }
@@ -334,11 +338,28 @@ class UserController extends Controller
 
 
     }
+    public function Article($id){
+
+        $article =Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->find($id);
+        $article['views'] +=1;
+        $article->save();
+        $data['article'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->find($id);
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
+        $data['articles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->paginate(3);
+        $data['popularArticle'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->first();
+
+        $data['cats'] = Article_category::get();
+        return view('article',$data);
+    }
     public function Home(){
 
         $data['products'] = Product::orderBy('id','desc')->paginate(12);
-        $data['authors'] = Authors::paginate(12);
+
         $data['categories'] = Categories::paginate(20);
+        $data['popularArticle'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->first();
+        $data['articles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->paginate(3);
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
+        $data['cats'] = Article_category::get();
         $data['sliders'] = Product::orderBy('id','desc')->paginate(3);
 
 
@@ -347,75 +368,137 @@ class UserController extends Controller
         return view('home',$data);
     }
     public function Shop(){
-        $data['products'] = Product::orderBy('id')->paginate(7);
-        $data['authors'] = Authors::get();
+        $data['products'] = Product::orderBy('id','desc')->paginate(6);
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
         $data['categories'] = Categories::get();
+        $data['cats'] = Article_category::get();
 
 
 
         return view('shop',$data);
     }
-    public function Search(Request $request){
 
-        $rules = [
-            'category' =>'required|max:255',
-            'author' =>'required|max:255'
+    public  function ArticleCategory($categoryId){
+        $data['popularArticle'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->first();
+        $data['cats'] = Article_category::get();
+        $data['mainCat'] = Article_category::find($categoryId);
+        $cat = Article_category::find($categoryId);
+        $data['articles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->paginate(4);
+        $data['articlesMain'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->where('cat_id',$cat['id'])->orderBy('created_at','desc')->paginate(8);
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
+        return view('article_category',$data);
+    }
+    public  function Popular(){
+        $data['popularArticle'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->first();
+        $data['cats'] = Article_category::get();
 
-        ];
+        $data['articles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->paginate(4);
+        $data['articlesMain'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->paginate(4);
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
+        return view('article_spec',$data);
+    }
+    public  function FreshArticles(){
+        $data['popularArticle'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->first();
+        $data['cats'] = Article_category::get();
 
-        $messages = [
-            "category.required" => "Выберите категорию",
-            "author.required" => "Выберите автора"
-        ];
-        $validator = $this->validator($request->all(), $rules, $messages);
+        $data['articles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('views','desc')->paginate(4);
+        $data['articlesMain'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
+        return view('article_spec',$data);
+    }
+    public function Test(Request $request){
+        $data['cats'] = Article_category::get();
+        $array = array_combine($request['product_ids'],$request['quantity']);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator->errors());
+        foreach($array as $key => $quantity){
+            $product = Product::where('id',$key)->first();
+            $product['new_price'] =$product['price']*$quantity;
+            $product['quantity'] = $quantity;
+            $new[] = $product;
 
-        }else{
-            if ($request['category'] == 'All') {
-                $data['products'] = Product::paginate(12);
-                $data['authors'] = Authors::get();
-                $data['categories'] = Categories::get();
-                if($request['author'] != 'All'){
-
-                $data['products'] =Product::where('author','LIKE','%'.$request['author'].'%')->paginate(12);
-                $data['authors'] = Authors::get();
-                $data['categories'] = Categories::get();
-
-                }
-
-                # code...
-            }elseif ($request['category'] != 'All') {
-
-                $data['products'] =Product::where('chars','LIKE','%'.$request['category'].'%')->paginate(12);
-                $data['authors'] = Authors::get();
-                $data['categories'] = Categories::get();
-                if($request['author'] != 'All'){
-
-                $data['products'] =Product::where('author','LIKE','%'.$request['author'].'%');
-                $data['products']  = $data['products']->where('chars','LIKE','%'.$request['category'].'%')->paginate(12);
-
-                $data['authors'] = Authors::get();
-                $data['categories'] = Categories::get();
-
-                }
-
-                # code...
-            }
-            return view('shop',$data);
-
-
+        }
+        $totalQuantity = 0;
+        foreach($new as $product){
+            $totalQuantity += $product['quantity'];
         }
 
 
+
+        $data['products'] = $new;
+
+        $total = 0;
+        foreach($new as $product){
+
+            $total+= $product['new_price'];
+        }
+
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
+        $data['total'] = $total;
+        $data['quantity'] = $totalQuantity;
+
+
+        return view('order',$data);
+
+
+
+
+
+
     }
+
+    public  function  Search(Request $request){
+        $rules = [
+          'search' => 'required'
+        ];
+        $messages = [
+          'search.required' => 'Введите название '
+        ];
+        $validator = $this->validator($request->all(),$rules,$messages);
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else {
+            $data['popularArticle'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->select('articles.*', 'name')->orderBy('views', 'desc')->first();
+            $data['cats'] = Article_category::get();
+
+            $data['articles'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->select('articles.*', 'name')->orderBy('views', 'desc')->paginate(4);
+            $data['articlesMain'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->where('title','LIKE', '%' . $request['search'] . '%')->select('articles.*', 'name')->orderBy('views', 'desc')->paginate(8);
+
+
+            $data['NewArticles'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->select('articles.*', 'name')->orderBy('created_at', 'desc')->paginate(4);
+            return view('article_spec', $data);
+        }
+    }
+    public  function  SearchProduct(Request $request){
+        $rules = [
+            'search' => 'required'
+        ];
+        $messages = [
+            'search.required' => 'Введите название '
+        ];
+        $validator = $this->validator($request->all(),$rules,$messages);
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors());
+        }else {
+            $data['popularArticle'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->select('articles.*', 'name')->orderBy('views', 'desc')->first();
+            $data['cats'] = Article_category::get();
+
+            $data['articles'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->select('articles.*', 'name')->orderBy('views', 'desc')->paginate(4);
+            $data['products'] = Product::where('title','LIKE','%'.$request['search'].'%')->orderBy('id','desc')->paginate(6);
+
+
+            $data['NewArticles'] = Article::join('article_categories', 'articles.cat_id', '=', 'article_categories.id')->select('articles.*', 'name')->orderBy('created_at', 'desc')->paginate(4);
+            return view('shop', $data);
+        }
+    }
+
     public function Product($productId){
-        $products = Product::where('id','!=',$productId)->get();
-        $product = Product::find($productId);
+        $data['cats'] = Article_category::get();
+        $data['product'] = Product::find($productId);
+        $data['NewArticles'] = Article::join('article_categories','articles.cat_id','=','article_categories.id')->select('articles.*','name')->orderBy('created_at','desc')->paginate(4);
 
 
-        return view('product',['products'=>$products,'product'=>$product]);
+
+        return view('product',$data);
     }
     public function RegisterPage(){
         return view('register');
@@ -615,6 +698,7 @@ class UserController extends Controller
     public function Out(Request $request){
         session()->forget('user');
         return redirect()->route('LoginPage')->withErrors('Вы вышли');
+
     }
 
     public function Main(){

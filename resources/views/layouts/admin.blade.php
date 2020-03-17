@@ -31,6 +31,14 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{asset('admin-vendor/css/themes/all-themes.css')}}" rel="stylesheet" />
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+
+    <!-- include summernote css/js-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.7.0/summernote.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.7.0/summernote.js"></script>
     @stack('css')
 </head>
 
@@ -94,24 +102,28 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">НАВИГАЦИЯ</li>
-                <li class="">
-                    <a href="{{route('admin.Users')}}">
-                        <i class="material-icons">home</i>
-                        <span>пользователи</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{route('admin.Orders')}}">
                         <i class="material-icons">shopping_cart</i>
                         <span>Заказы</span>
                     </a>
                 </li>
+
                 <li>
-                    <a href="{{route('admin.WithdrawShow')}}">
-                        <i class="material-icons">attach_money</i>
-                        <span>Выводы</span>
+                    <a href="{{route('admin.Posts')}}">
+                        <i class="material-icons">shopping_cart</i>
+                        <span>Посты</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('admin.CreatePost')}}">
+                        <i class="material-icons">calendar_today</i>
+                        <span>Создать пост</span>
+                    </a>
+                </li>
+
+
                 <li>
                     <a href="{{route('admin.ProductView')}}">
                          <i class="material-icons">work_outline</i>
@@ -124,36 +136,14 @@
                         <span>управление магазином</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('admin.BlackList')}}">
-                        <i class="material-icons">close</i>
-                        <span>Черный список</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('admin.MessagePage')}}">
-                        <i class="material-icons">mail</i>
-                        <span>Писма для тех поддержки</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('admin.Tree')}}">
-                        <i class="material-icons">home</i>
-                        <span>Матрица</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{route('Home')}}">
                         <i class="material-icons">web</i>
                         <span>Домой</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('Out')}}">
-                        <i class="material-icons">undo</i>
-                        <span>Выход</span>
-                    </a>
-                </li>
+
 
             </ul>
         </div>
@@ -181,13 +171,9 @@
     @yield('content')
 </section>
 
-<script
-    src="https://code.jquery.com/jquery-2.2.4.min.js"
-    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-    crossorigin="anonymous"></script>
 
 <!-- Bootstrap Core Js -->
-<script src="{{asset('admin-vendor/plugins/bootstrap/js/bootstrap.js')}}"></script>
+
 
 <!-- Select Plugin Js -->
 <script src="{{asset('admin-vendor/plugins/bootstrap-select/js/bootstrap-select.js')}}"></script>
@@ -206,6 +192,40 @@
 
 <!-- Demo Js -->
 <script src="{{asset('admin-vendor/js/demo.js')}}"></script>
+
+
+<script>
+    $(document).ready(function() {
+
+        $('.summernote').summernote({
+
+            callbacks: {
+                onImageUpload: function(files) {
+                    var el = $(this);
+                    sendFile(files[0],el);
+                }
+            }
+        });
+    });
+
+    function sendFile(file, el) {
+        var  data = new FormData();
+        data.append("file", file);
+        var url = '{{ route('admin.upload') }}';
+        $.ajax({
+            data: data,
+            type: "POST",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(url2) {
+                el.summernote('insertImage', url2);
+            }
+        });
+    }
+</script>
 @stack('js')
 </body>
 
